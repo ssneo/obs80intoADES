@@ -464,6 +464,16 @@ class autoOperations:
                 #calculte ra_degs and dec_degs 
 
                 data_dic[data_dic_count] = {}
+                
+                permid = self.dic[i]['entry_permid'].get()
+                print ('permid', permid)
+                if len( permid ) != 0:
+                    data_dic[data_dic_count]['permID']   = permid
+                provid = self.dic[i]['entry_provid'].get()
+                print ('provid', provid)
+                if len( provid ) != 0:
+                    data_dic[data_dic_count]['provID']   = provid
+
                 data_dic[data_dic_count]['trkSub']   = "None"
                 data_dic[data_dic_count]['mode']     = "CCD"
                 data_dic[data_dic_count]['stn']      = self.config["MPC_CODE"]
@@ -476,12 +486,7 @@ class autoOperations:
                 data_dic[data_dic_count]['mag']      = self.obs[i]['mag']
                 data_dic[data_dic_count]['rmsMag']   = self.obs[i]['mag_error']
                 data_dic[data_dic_count]['band']   = self.obs[i]['filter']
-                permid = self.dic[data_dic_count]['entry_permid'].get()
-                if len( permid ) != 0:
-                    data_dic[data_dic_count]['permID']   = permid
-                provid = self.dic[data_dic_count]['entry_provid'].get()
-                if len( permid ) != 0:
-                    data_dic[data_dic_count]['provID']   = provid
+                
 
                 data_dic_count += 1
 
