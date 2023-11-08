@@ -38,7 +38,7 @@ class autoOperations:
             self.config = json.load(infile)
 
         Label( self.mp, text='Submiter').grid(row=2, column=0, sticky=W)
-        self.submiter_for_ades = Label( self.mp, text=self.config["YOUR_NAME_FOR_THE_ADES_SUBMITTER_FIELD"] )
+        self.submiter_for_ades = Label( self.mp, text=self.config["NAME_FOR_THE_ADES_SUBMITTER_FIELD"] )
         self.submiter_for_ades.grid( row=2, column = 1, columnspan=2, sticky = W)
 
         Label( self.mp, text='Observatory').grid(row=2, column=3, sticky=E)
@@ -96,7 +96,7 @@ class autoOperations:
             with open( self.config_val.get() ) as infile:
                 self.config = json.load(infile)
 
-            self.submiter_for_ades.config( text=self.config["YOUR_NAME_FOR_THE_ADES_SUBMITTER_FIELD"]  )
+            self.submiter_for_ades.config( text=self.config["NAME_FOR_THE_ADES_SUBMITTER_FIELD"]  )
             self.observatory_for_ades.config( text=self.config["OBSERVATORY_NAME_FOR_ADES"] )
             self.observers_for_ades.config( text=self.config["OBSERVERS_FOR_ADES"]  )
             self.tel_design_for_ades.config( text=self.config["TELESCOPE_DESIGN_FOR_ADES"]  )
@@ -420,7 +420,13 @@ class autoOperations:
 
     def submit_obs( self ):
 
-        self.build_xml()
+        fileName = self.build_xml()
+
+        command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
+
+        print (command)
+
+        os.system( command )
 
     def build_xml( self ):
 
@@ -438,7 +444,7 @@ class autoOperations:
             head_dict["fundingSource"]  = self.config["FUNDING_AGENCY_FOR_ADES"]
 
         head_dict["observatoryName"]            = self.config["OBSERVATORY_NAME_FOR_ADES"]
-        head_dict["submitter"]          = self.config["YOUR_NAME_FOR_THE_ADES_SUBMITTER_FIELD"]
+        head_dict["submitter"]          = self.config["NAME_FOR_THE_ADES_SUBMITTER_FIELD"]
         head_dict["observers"]          = self.config["OBSERVERS_FOR_ADES"]
         head_dict["measurers"]          = self.config["MEASURERS_FOR_ADES"]
         head_dict["telescope_design"]   = self.config["TELESCOPE_DESIGN_FOR_ADES"]
@@ -512,9 +518,13 @@ class autoOperations:
         with open(xml_filename, "w", encoding="UTF-8") as files:
             files.write(xml_string)
 
+
+
         #def find_match_in_log_file( self ):
 
         #    for i in range(0, len( self.log ) ):
+
+        return xml_filename
 
 
     def calculteObsTime( self, i):
@@ -660,7 +670,7 @@ class autoOperations:
                     character2Number = j + 10
                     first_number = character2Number
 
-            #print ('first_number', first_number)
+            #print ('first_number', first_number, type(first_number))
 
             second_number = name[10]
             #print ('second_number', second_number)
@@ -668,7 +678,10 @@ class autoOperations:
             second_letter = name[11]
             #print ('second_letter', second_letter)
 
-            unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{first_number}{second_number}"
+            if first_number == "0": #don't include the first zero
+                unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{second_number}"
+            else:
+                unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{first_number}{second_number}"
             #print ('unpacked_provid', unpacked_provid)
 
             #unpacked_provid = f"{first_half_of_year}{second_half_of_year} "

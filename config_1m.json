@@ -1,6 +1,6 @@
 {
     "MPC_CODE"                              : "807",
-    "YOUR_NAME_FOR_THE_ADES_SUBMITTER_FIELD": "T. Linder",
+    "NAME_FOR_THE_ADES_SUBMITTER_FIELD"     : "R. Holmes",
     "LOCATION_OF_ASTROMETRICA_LOG_FILES"    : "C:\\Astrometrica\\!EIU Astrometrica (outputfile)",
     "LOCATION_TO_SAVE_XML_FILES"            : "C:\\Astrometrica\\obs80intoADES",
     "IF_NO_FWHM_IS_CALCULTED_USE_VALUE"     : "5.0",
