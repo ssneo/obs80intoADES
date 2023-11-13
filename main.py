@@ -49,7 +49,7 @@ class autoOperations:
         self.observers_for_ades = Label( self.mp, text=self.config["OBSERVERS_FOR_ADES"] )
         self.observers_for_ades.grid( row=3, column = 1, columnspan=2, sticky = W)
 
-        Label( self.mp, text='Tel Design').grid(row=3, column=3, sticky=E)
+        Label( self.mp, text='Tel Design').grid(row=3, column=3, sticky=W)
         self.tel_design_for_ades = Label( self.mp, text=self.config["TELESCOPE_DESIGN_FOR_ADES"] )
         self.tel_design_for_ades.grid( row=3, column = 4, columnspan=2, sticky = W)
 
@@ -525,7 +525,6 @@ class autoOperations:
         #    for i in range(0, len( self.log ) ):
 
         return xml_filename
-
 
     def calculteObsTime( self, i):
 
