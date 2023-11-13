@@ -49,7 +49,7 @@ class autoOperations:
         self.observers_for_ades = Label( self.mp, text=self.config["OBSERVERS_FOR_ADES"] )
         self.observers_for_ades.grid( row=3, column = 1, columnspan=2, sticky = W)
 
-        Label( self.mp, text='Tel Design').grid(row=3, column=3, sticky=W)
+        Label( self.mp, text='Tel Design   ').grid(row=3, column=3, sticky=E)
         self.tel_design_for_ades = Label( self.mp, text=self.config["TELESCOPE_DESIGN_FOR_ADES"] )
         self.tel_design_for_ades.grid( row=3, column = 4, columnspan=2, sticky = W)
 
@@ -275,7 +275,8 @@ class autoOperations:
                 self.obs[count]['year'] = self.obs80[i][date_start : (date_start + 4) ]
                 self.obs[count]['month'] = self.obs80[i][ (date_start + 5) : (date_start + 7) ]
                 self.obs[count]['day'] = self.obs80[i][ (date_start + 8) : (date_start + 10) ]
-                self.obs[count]['time'] = self.obs80[i][ (date_start + 11) : (date_start + 17) ].replace(" ", "") #get rid of the extra spaces
+                #print ('time', "0." + self.obs80[i][ (date_start + 11) : (date_start + 17) ].replace(" ", "") ) #get rid of the extra spaces
+                self.obs[count]['time'] = "0." + self.obs80[i][ (date_start + 11) : (date_start + 17) ].replace(" ", "") #get rid of the extra spaces
                 self.obs[count]['ra_hour'] = self.obs80[i][32:34]
                 self.obs[count]['ra_minutes'] = self.obs80[i][35:37]
                 self.obs[count]['ra_seconds'] = self.obs80[i][38:43]
@@ -533,30 +534,37 @@ class autoOperations:
 
             #convert obs80 time into HMS
             #print ('time', self.obs[i]['time'])
-            zero_value = "".zfill( len( self.obs[i]['time'] ) -1 ) #need to divide the obs80 to get a decimal but dependnt on how many digits of time you have
+            #zero_value = "".zfill( len( self.obs[i]['time'] ) -1 ) #need to divide the obs80 to get a decimal but dependnt on how many digits of time you have
             #print ('zero_value', zero_value)
-            zero_value = "1" + zero_value
+            #zero_value = "1" + zero_value
             #print ('zero_value', zero_value)
-            time = float( self.obs[i]['time'] ) / int( zero_value )
+            #time = float( self.obs[i]['time'] ) / int( zero_value )
+            time = float( self.obs[i]['time'] )
             #print ('time', time)
 
             hours_1 =  time * 24
             hours = int( hours_1 )
             hours_rem = hours_1 - hours
+            #print ('h', hours_1, hours, hours_rem,)
             minutes_1 = hours_rem * 60
             minutes = int( minutes_1)
             minutes_rem = minutes_1 - minutes
+            #print ('m', minutes_1, minutes, minutes_rem)
             seconds_1 = minutes_rem * 60
             seconds = int( seconds_1 )
             seconds_rem = int( round( seconds_1 - seconds, 2) * 100) #this needs to be a whole number value
+            #print ('s', seconds_1, seconds, seconds_rem)
 
             hours = str( hours ).zfill(2)
             minutes = str( minutes ).zfill(2)
             seconds = str( seconds ).zfill(2)
 
+            #print (hours, minutes, seconds)
+
             time = '%s:%s:%s.%s'%(hours, minutes, seconds, seconds_rem)
             #print ('time', time)
 
+            #stop
             
 
             obsTime = "%sT%sZ"%(date, time)
