@@ -598,13 +598,14 @@ class autoOperations:
         #real submission
         command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
 
-        print (command)
+        #print (command)
 
         res = os.system( command )
 
-        print ('res', res)
+        #print ('res', res)
 
         if res == 0:
+            print ('MPC Accepted Submission')
             self.submit_button.config(bg='Green')
             current_file = self.xml_val.get()
             newFile = current_file.replace('prep', 'submitted')
@@ -618,6 +619,7 @@ class autoOperations:
 
             self.update_xml_file_list()
         else:
+            print ('MPC Rejected the Submission with curl error of: '%(res))
             self.submit_button.config(bg='Red')
 
     def build_xml( self ):
