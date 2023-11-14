@@ -8,6 +8,7 @@ from datetime import datetime
 import glob
 import xml.etree.ElementTree as XMLElement
 import xml.dom.minidom as minidom
+from astropy.time import Time
 
 class autoOperations:
 
@@ -31,7 +32,27 @@ class autoOperations:
         self.config_val.set( config_files[0] )
         self.previous_config_file = self.config_val.get()
         config_files_menu = OptionMenu(self.mp, self.config_val, *config_files)
-        config_files_menu.grid( row = 1, column = 0, columnspan=5, sticky=W )
+        config_files_menu.grid( row = 1, column = 0, columnspan=10, sticky=W )
+
+        self.xml_files = glob.glob( cwd + "\\prep_xml*.xml")
+        for i in self.xml_files: #errors occur when there is already a prep_xml file that is loaded on start-UP. to fix this, going to delete all prep_xml files on startup
+            os.remove(i)
+        self.xml_files = []    
+        self.xml_val = StringVar()
+        if len(self.xml_files) == 0:
+            self.xml_files = ['None']
+            self.xml_val.set( self.xml_files[0] )
+        else:
+            self.xml_val.set( self.xml_files[ len( self.xml_files ) - 1 ] )
+
+        self.xml_files_menu = OptionMenu(self.mp, self.xml_val, *self.xml_files)
+        self.xml_files_menu.grid( row = 50, column = 2, columnspan=10, sticky=W )
+
+        obs_types =['NEO', 'NEOCP', 'Unclassified', 'Comet', 'TNO', 'New NEO Candidate', 'New Comet', 'ARTSAT' ]
+        self.obs_types_val = StringVar()
+        self.obs_types_val.set( obs_types[0] )
+        obs_types_menu = OptionMenu(self.mp, self.obs_types_val, *obs_types)
+        obs_types_menu.grid( row = 50, column = 14, columnspan=4, sticky=W )
 
         #load the selected_config_file
         with open( config_files[0] ) as infile:
@@ -39,48 +60,54 @@ class autoOperations:
 
         Label( self.mp, text='Submiter').grid(row=2, column=0, sticky=W)
         self.submiter_for_ades = Label( self.mp, text=self.config["NAME_FOR_THE_ADES_SUBMITTER_FIELD"] )
-        self.submiter_for_ades.grid( row=2, column = 1, columnspan=2, sticky = W)
+        self.submiter_for_ades.grid( row=2, column = 2, columnspan=4, sticky = W)
 
-        Label( self.mp, text='Observatory').grid(row=2, column=3, sticky=E)
+        Label( self.mp, text='Observatory').grid(row=2, column=8, sticky=E)
         self.observatory_for_ades = Label( self.mp, text=self.config["OBSERVATORY_NAME_FOR_ADES"] )
-        self.observatory_for_ades.grid( row=2, column = 4, columnspan=2, sticky = W)
+        self.observatory_for_ades.grid( row=2, column = 10, columnspan=4, sticky = W)
 
         Label( self.mp, text='Observers').grid(row=3, column=0, sticky=W)
         self.observers_for_ades = Label( self.mp, text=self.config["OBSERVERS_FOR_ADES"] )
-        self.observers_for_ades.grid( row=3, column = 1, columnspan=2, sticky = W)
+        self.observers_for_ades.grid( row=3, column = 2, columnspan=4, sticky = W)
 
-        Label( self.mp, text='Tel Design   ').grid(row=3, column=3, sticky=E)
+        Label( self.mp, text='Tel Design   ').grid(row=3, column=8, sticky=E)
         self.tel_design_for_ades = Label( self.mp, text=self.config["TELESCOPE_DESIGN_FOR_ADES"] )
-        self.tel_design_for_ades.grid( row=3, column = 4, columnspan=2, sticky = W)
+        self.tel_design_for_ades.grid( row=3, column = 10, columnspan=4, sticky = W)
 
         Label( self.mp, text='Measures').grid(row=4, column=0, sticky=W)
         self.measures_for_ades = Label( self.mp, text=self.config["MEASURERS_FOR_ADES"] )
-        self.measures_for_ades.grid( row=4, column = 1, columnspan=2, sticky = W)
+        self.measures_for_ades.grid( row=4, column = 2, columnspan=4, sticky = W)
 
-        Label( self.mp, text='Tel Aperture').grid(row=4, column=3, sticky=E)
+        Label( self.mp, text='Tel Aperture').grid(row=4, column=8, sticky=E)
         self.tel_aperture_for_ades = Label( self.mp, text=self.config["TELESCOPE_APERTURE_FOR_ADES"] )
-        self.tel_aperture_for_ades.grid( row=4, column = 4, columnspan=2, sticky = W)
+        self.tel_aperture_for_ades.grid( row=4, column = 10, columnspan=4, sticky = W)
 
         Label( self.mp, text='Funding Agency').grid(row=5, column=0, sticky=W)
         self.funding_agency_for_ades = Label( self.mp, text=self.config["FUNDING_AGENCY_FOR_ADES"] )
-        self.funding_agency_for_ades.grid( row=5, column = 1, sticky = W)
+        self.funding_agency_for_ades.grid( row=5, column = 2, sticky = W)
 
-        Label( self.mp, text='Tel Detector').grid(row=5, column=3, sticky=E)
+        Label( self.mp, text='Tel Detector').grid(row=5, column=8, sticky=E)
         self.tel_detector_for_ades = Label( self.mp, text=self.config["TELESCOPE_DETECTOR_FOR_ADES"] )
-        self.tel_detector_for_ades.grid( row=5, column = 4, columnspan=2, sticky = W)
+        self.tel_detector_for_ades.grid( row=5, column = 10, columnspan=4, sticky = W)
 
         
 
         
-        Button( self.mp, text='Reload Obs80', command=self.reloadObs80Button ).grid(row=9, column=5, columnspan=2, sticky=W+E)
+        Button( self.mp, text='Reload Obs80', command=self.reloadObs80Button ).grid(row=9, column=18, columnspan=2, sticky=W+E)
         Label( self.mp, text='Use').grid(row=10, column=0)
-        Label( self.mp, text='Permid').grid(row=10, column=1)
-        Label( self.mp, text='Provid').grid(row=10, column=2)
-        Label( self.mp, text='Obs80').grid(row=10, column=3, sticky=W+E)
-        Label( self.mp, text='FWHM', width=10).grid(row=10, column=4, sticky=W+E)
-        Label( self.mp, text='SNR', width=10).grid(row=10, column=5, sticky=W+E)
-        Label( self.mp, text='POS_UNC', width=10).grid(row=10, column=6, sticky=W+E)
-        Button( self.mp, text='Submit Obs', command=self.submit_obs ).grid(row=50, column=5, columnspan=2, sticky=W+E)
+        Label( self.mp, text='Permid').grid(row=10, column=2, sticky=W)
+        Label( self.mp, text='Provid').grid(row=10, column=4, sticky=W)
+        Label( self.mp, text='NEOCP(trkSub)').grid(row=10, column=6, sticky=W)
+        Label( self.mp, text='Mag').grid(row=10, column=8, sticky=W)
+        Label( self.mp, text='FWHM').grid(row=10, column=10, sticky=W)
+        Label( self.mp, text='Obs80').grid(row=10, column=12, sticky=W+E)
+        Label( self.mp, text='FWHM', width=10).grid(row=10, column=14, sticky=W+E)
+        Label( self.mp, text='SNR', width=10).grid(row=10, column=16, sticky=W+E)
+        Label( self.mp, text='POS_UNC', width=10).grid(row=10, column=18, sticky=W+E)
+        self.submit_button = Button( self.mp, text='Submit Obs', command=self.submit_obs, bg='Grey' )
+        self.submit_button.grid(row=50, column=18, columnspan=2, sticky=W+E)
+        Button( self.mp, text='Build ADES', command=self.build_ades ).grid(row=50, column=16, columnspan=2, sticky=W+E)
+        Button( self.mp, text='Delete ADES File', command=self.delete_ades_file ).grid(row=50, column=0, columnspan=2, sticky=W+E)
 
         
         self.dic = {}
@@ -114,6 +141,25 @@ class autoOperations:
 
             self.previous_config_file = self.config_val #reset the previous value
 
+        for count in self.dic:
+            #print (count)
+            if self.dic[count]['entry_fwhm'].get() != self.obs[count]['fwhm']: #if the user changes the fwhm value then update the pos_unc
+
+                usefwhm = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                    usefwhm = float( self.obs[count]['snr'] )
+
+                self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usefwhm ) , 2)
+
+                self.dic[count]['label_pos_unc'].config(text='%s'%(self.obs[count]['pos_unc'] ) )
+
+            if self.dic[count]['entry_mag'].get() != self.obs[count]['mag']:
+                self.obs[count]['mag'] = self.dic[count]['entry_mag'].get()
+
+                
+
+
+
 
         
         refreshRate = 500
@@ -144,7 +190,7 @@ class autoOperations:
 
             
             
-            if len( self.obs) != 0 and i < self.currentNumberOfObs : #is i variable greater than the number of obs, this means we need to send destroy commands
+            if i < self.currentNumberOfObs : #is i variable greater than the number of obs, this means we need to send destroy commands
                 for j in listOfHeaderValues:
                     
                     if self.obs[i]['obs80'][0:3] == j:
@@ -156,29 +202,45 @@ class autoOperations:
                     #self.dic[i]['button'] = Checkbutton( self.mp, text=self.obs80[i], variable = self.dic[i]['variable'], onvalue=1, offvalue=0, height=2, width=100)
                     self.dic[i]['button'] = Checkbutton( self.mp, variable = self.dic[i]['variable'], onvalue=1, offvalue=0, height=2, width=5)
                     row_value = 20 + i
-                    self.dic[i]['button'].grid(row=row_value, column=0, stick=W)
+                    self.dic[i]['button'].grid(row=row_value, column=0, columnspan=2, sticky=W+E)
                     self.dic[i]['variable'].set(1)
 
-                    permid, provid = self.determinePermidProvidValues( self.obs[i]['name'] )
+                    permid, provid, trksub = self.determinePermidProvidValues( self.obs[i]['name'] )
                     #print (permid, provid)
 
-                    self.dic[i]['entry_permid'] = Entry(  width=8 )
-                    self.dic[i]['entry_permid'].grid( row=row_value, column=1, sticky=W+E)
+                    self.dic[i]['entry_permid'] = Entry(  width=15 )
+                    self.dic[i]['entry_permid'].grid( row=row_value, column=2, sticky=W+E)
                     if permid != None:
                         self.dic[i]['entry_permid'].insert(0, permid)
                     
 
-                    self.dic[i]['entry_provid'] = Entry( width=8 )
-                    self.dic[i]['entry_provid'].grid( row=row_value, column=2, sticky=W+E)
+                    self.dic[i]['entry_provid'] = Entry( width=15 )
+                    self.dic[i]['entry_provid'].grid( row=row_value, column=4, sticky=W+E)
                     if provid != None:
                         self.dic[i]['entry_provid'].insert(0, provid)
+
+                    self.dic[i]['entry_trksub'] = Entry( width=15 )
+                    self.dic[i]['entry_trksub'].grid( row=row_value, column=6, sticky=W+E)
+                    if trksub != None:
+                        self.dic[i]['entry_trksub'].insert(0, trksub)
+
+                    
+
+                    self.dic[i]['entry_mag'] = Entry( width=8 )
+                    self.dic[i]['entry_mag'].grid( row=row_value, column=8, sticky=W+E)
+                    
+                    self.dic[i]['entry_mag'].insert(0, self.obs[i]['mag'])
+
+                    self.dic[i]['entry_fwhm'] = Entry( width=15 )
+                    self.dic[i]['entry_fwhm'].grid( row=row_value, column=10, sticky=W+E)
+                    self.dic[i]['entry_fwhm'].insert(0, self.obs[i]['fwhm'] )
 
                     
 
                     
 
                     self.dic[i]['label_obs80'] = Label( self.mp, text=self.obs[i]['obs80'] )
-                    self.dic[i]['label_obs80'].grid(row=row_value, column=3, sticky=W)
+                    self.dic[i]['label_obs80'].grid(row=row_value, column=12, sticky=W)
 
                     if 'fwhm' in self.obs[i]: #if 'fwhm key does not exist there was a fail
                         self.dic[i]['label_fwhm'] = Label( self.mp, text=self.obs[i]['fwhm'] )
@@ -191,9 +253,9 @@ class autoOperations:
                         self.dic[i]['variable'].set(0)
                         
 
-                    self.dic[i]['label_fwhm'].grid(row=row_value, column=4, sticky=W+E)
-                    self.dic[i]['label_snr'].grid(row=row_value, column=5, sticky=W+E)
-                    self.dic[i]['label_pos_unc'].grid(row=row_value, column=6, sticky=W+E)
+                    self.dic[i]['label_fwhm'].grid(row=row_value, column=14, sticky=W+E)
+                    self.dic[i]['label_snr'].grid(row=row_value, column=16, sticky=W+E)
+                    self.dic[i]['label_pos_unc'].grid(row=row_value, column=18, sticky=W+E)
 
             else:
                 #try:
@@ -203,6 +265,8 @@ class autoOperations:
                     self.dic[i]['button'].destroy()
                     self.dic[i]['entry_permid'].destroy()
                     self.dic[i]['entry_provid'].destroy()
+                    self.dic[i]['entry_trksub'].destroy()
+                    self.dic[i]['entry_mag'].destroy()
                     self.dic[i]['label_obs80'].destroy()
                     self.dic[i]['label_fwhm'].destroy()
                     self.dic[i]['label_snr'].destroy()
@@ -321,6 +385,20 @@ class autoOperations:
                     catalog = "UCAC3" #mpc has changed their requirement
                 self.header['catalog'] = catalog
 
+                #match information from the photometry File:
+
+                jd = self.calculteJD( count )
+                #print (jd)
+                for j in range( 0, len( self.phot ) ):
+                    length_of_jd = len( jd )
+                    if jd == self.phot[j][0:length_of_jd]:
+                        #print ('jd', jd)
+                        #print ('snr', self.phot[j][30:35])
+                        self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                        #stop
+
+
+
 
                 #match information from log.log File
                 for k in range( 0, len( self.log ) ):
@@ -418,7 +496,12 @@ class autoOperations:
                                 self.obs[count]['fwhm']                 = self.log[k][90:94]
                             self.obs[count]['snr']                      = self.log[k][95:102]
                             self.obs[count]['fit_rms']                  = self.log[k][103:108]
-                            self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / float( self.obs[count]['snr'] ) ) , 2)
+                            
+                            usefwhm = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                            if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                                usefwhm = float( self.obs[count]['snr'] )
+
+                            self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usefwhm ) , 2)
                             break #this will break the k loop
                             #stop
                         
@@ -441,20 +524,106 @@ class autoOperations:
         with open("astrometrica_header.json", "w") as outfile:
             json.dump(self.obs, outfile)
 
+    def update_xml_file_list(self):
+
+        cwd = os.getcwd()
+        
+        current_prep_list = glob.glob( cwd + "\\prep_xml*.xml")
+        #delete the whole xml_files list
+        self.xml_files.clear()
+
+        for j in range( 0, len( current_prep_list ) ):
+
+            self.xml_files.append( current_prep_list[j] )
+
+        #self.xml_files_menu.delete(0, "end")
+        #for i in self.xml_files:
+        if len(self.xml_files) > 0:
+            self.xml_val.set( self.xml_files[ len(self.xml_files) -1 ] )
+        else:
+            self.xml_files.append('None')
+            self.xml_val.set( self.xml_files[ len(self.xml_files) -1 ] )
+
+        #self.xml_files_menu.config( self.xml_val, self.xml_files )
+        self.xml_files_menu.destroy()
+        self.xml_files_menu = OptionMenu(self.mp, self.xml_val, *self.xml_files)
+        self.xml_files_menu.grid( row = 50, column = 2, columnspan=10, sticky=W )
+
+        self.xml_val.set( self.xml_files[ len( self.xml_files )-1 ] )
+
+    def delete_ades_file(self):
+
+        current_file = self.xml_val.get()
+        newFile = current_file.replace('prep', 'deleted')
+        os.rename( current_file, newFile)
+
+        self.update_xml_file_list()
+
+    def build_ades(self):
+
+        self.xml_filename = self.build_xml()
+
+        
+        self.update_xml_file_list()
+
+        self.submit_button.config(bg='Grey')
+        
+
+        #self.xml_val.
+
     def submit_obs( self ):
 
-        fileName = self.build_xml()
+        xml_filename = self.build_xml()
 
-        command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
+        #xml_filename = self.xml_val.get()
+
+        obs_type = self.obs_types_val.get()
+
+
+
+        ack_line="ack=permid_%s_provid_%s_trkSub_%s"%(self.permid, self.provid, self.trkSub)
+        #email_line = "ack=tlinder34@gmail.com,lehorn93@gmail.com,star@astro-research.org"
+        email_line = "ac2=%s"%(self.config["LIST_OF_EMAILS_FOR_AC2_LINE"])
+        obs_type_field = "obj_type=%s"%(obs_type)
+
+        #print ('ack_line', ack_line)
+        #print ('email_line', email_line)
+        
+
+        #command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
+        
+        #testing
+        #command = 'curl https://minorplanetcenter.net/submit_xml_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+
+        #real submission
+        command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
 
         print (command)
 
-        os.system( command )
+        res = os.system( command )
+
+        print ('res', res)
+
+        if res == 0:
+            self.submit_button.config(bg='Green')
+            current_file = self.xml_val.get()
+            newFile = current_file.replace('prep', 'submitted')
+            os.rename( current_file, newFile)
+
+            #remove all current prep_xml_files
+            cwd = os.getcwd()
+            current_prep_list = glob.glob( cwd + "\\prep_xml*.xml")
+            for i in current_prep_list:
+                os.remove(i)
+
+            self.update_xml_file_list()
+        else:
+            self.submit_button.config(bg='Red')
 
     def build_xml( self ):
 
         current_date_time = datetime.utcnow()
-        xml_filename = f"xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.xml"
+        xml_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.xml"
 
         #xml_filename = "Catalog.xml"
 
@@ -495,15 +664,29 @@ class autoOperations:
                 data_dic[data_dic_count] = {}
                 
                 permid = self.dic[i]['entry_permid'].get()
-                print ('permid', permid)
+                #print ('permid', permid)
                 if len( permid ) != 0:
                     data_dic[data_dic_count]['permID']   = permid
+                    self.permid = permid
+                else:
+                    self.permid = None
+
                 provid = self.dic[i]['entry_provid'].get()
-                print ('provid', provid)
+                #print ('provid', provid)
                 if len( provid ) != 0:
                     data_dic[data_dic_count]['provID']   = provid
+                    self.provid = provid
+                else:
+                    self.provid = None
 
-                data_dic[data_dic_count]['trkSub']   = "None"
+                trkSub = self.dic[i]['entry_trksub'].get()
+                #print ('trkSub', trkSub)
+                if len( trkSub ) != 0:
+                    data_dic[data_dic_count]['trkSub']   = trkSub
+                    self.trkSub = trkSub
+                else:
+                    self.trkSub = None
+
                 data_dic[data_dic_count]['mode']     = "CCD"
                 data_dic[data_dic_count]['stn']      = self.config["MPC_CODE"]
                 data_dic[data_dic_count]['obsTime']  = obsTime
@@ -551,48 +734,60 @@ class autoOperations:
 
     def calculteObsTime( self, i):
 
-            #obsTime format is yyyy-mm-ddThh:mm:ss.sssZ
-            date = "%s-%s-%s"%(self.obs[i]['year'], self.obs[i]['month'], self.obs[i]['day'] )
+        #obsTime format is yyyy-mm-ddThh:mm:ss.sssZ
+        date = "%s-%s-%s"%(self.obs[i]['year'], self.obs[i]['month'], self.obs[i]['day'] )
 
-            #convert obs80 time into HMS
-            #print ('time', self.obs[i]['time'])
-            #zero_value = "".zfill( len( self.obs[i]['time'] ) -1 ) #need to divide the obs80 to get a decimal but dependnt on how many digits of time you have
-            #print ('zero_value', zero_value)
-            #zero_value = "1" + zero_value
-            #print ('zero_value', zero_value)
-            #time = float( self.obs[i]['time'] ) / int( zero_value )
-            time = float( self.obs[i]['time'] )
-            #print ('time', time)
+        #convert obs80 time into HMS
+        #print ('time', self.obs[i]['time'])
+        #zero_value = "".zfill( len( self.obs[i]['time'] ) -1 ) #need to divide the obs80 to get a decimal but dependnt on how many digits of time you have
+        #print ('zero_value', zero_value)
+        #zero_value = "1" + zero_value
+        #print ('zero_value', zero_value)
+        #time = float( self.obs[i]['time'] ) / int( zero_value )
+        time = float( self.obs[i]['time'] )
+        #print ('time', time)
 
-            hours_1 =  time * 24
-            hours = int( hours_1 )
-            hours_rem = hours_1 - hours
-            #print ('h', hours_1, hours, hours_rem,)
-            minutes_1 = hours_rem * 60
-            minutes = int( minutes_1)
-            minutes_rem = minutes_1 - minutes
-            #print ('m', minutes_1, minutes, minutes_rem)
-            seconds_1 = minutes_rem * 60
-            seconds = int( seconds_1 )
-            seconds_rem = int( round( seconds_1 - seconds, 2) * 100) #this needs to be a whole number value
-            #print ('s', seconds_1, seconds, seconds_rem)
+        hours_1 =  time * 24
+        hours = int( hours_1 )
+        hours_rem = hours_1 - hours
+        #print ('h', hours_1, hours, hours_rem,)
+        minutes_1 = hours_rem * 60
+        minutes = int( minutes_1)
+        minutes_rem = minutes_1 - minutes
+        #print ('m', minutes_1, minutes, minutes_rem)
+        seconds_1 = minutes_rem * 60
+        seconds = int( seconds_1 )
+        seconds_rem = int( round( seconds_1 - seconds, 2) * 100) #this needs to be a whole number value
+        #print ('s', seconds_1, seconds, seconds_rem)
 
-            hours = str( hours ).zfill(2)
-            minutes = str( minutes ).zfill(2)
-            seconds = str( seconds ).zfill(2)
+        hours = str( hours ).zfill(2)
+        minutes = str( minutes ).zfill(2)
+        seconds = str( seconds ).zfill(2)
 
-            #print (hours, minutes, seconds)
+        #print (hours, minutes, seconds)
 
-            time = '%s:%s:%s.%s'%(hours, minutes, seconds, seconds_rem)
-            #print ('time', time)
+        time = '%s:%s:%s.%s'%(hours, minutes, seconds, seconds_rem)
+        #print ('time', time)
 
-            #stop
-            
+        #stop
+        
 
-            obsTime = "%sT%sZ"%(date, time)
+        obsTime = "%sT%sZ"%(date, time)
 
-            return obsTime
+        return obsTime
     
+    def calculteJD( self, i):
+
+        date= "%s-%s-%s"%(self.obs[i]['year'], self.obs[i]['month'], self.obs[i]['day'] )
+        dateTime = date + "T00:00:00.0"
+        t = Time( dateTime, format='isot', scale='utc' )
+        #print ('t.jd', t.jd)
+        #print ('time', self.obs[i]['time'])
+        jd = t.jd + float( self.obs[i]['time'] )
+        #print ('jd', jd)
+        #stop
+        return str(jd)
+
     def calculteRa_degs( self, i):
         ra_hour = int( self.obs[i]['ra_hour'] )
         ra_minutes = int( self.obs[i]['ra_minutes'] )
@@ -725,21 +920,23 @@ class autoOperations:
 
         #print (we_have_packed_number, we_have_packed_provid, we_have_neocp)
         if we_have_packed_number == True:
-            permid = unpacked_number
-            provid = None
+            permid  = unpacked_number
+            provid  = None
+            trksub   = name.replace(" ", "")
 
         elif we_have_packed_provid == True:
-            permid = None
-            provid = unpacked_provid
+            permid  = None
+            provid  = unpacked_provid
+            trksub   = name.replace(" ", "")
 
         if we_have_neocp == True:
-            permid = None
-            provid = name.replace(" ", "")
-
+            permid  = None
+            provid  = None
+            trksub   = name.replace(" ", "")
         #print ('permid', permid, 'provid', provid)
         #stop
 
-        return permid, provid
+        return permid, provid, trksub
 
             
 

@@ -1,2 +1,6 @@
 .DS_Store
 xml_output*
+prep_xml*
+submitted_xml*
+deleted_xml*
+config*

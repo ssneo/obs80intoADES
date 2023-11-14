@@ -7,7 +7,7 @@
 				<name>Cerro Tololo Inter-American Observatory</name>
 			</observatory>
 			<submitter>
-				<name>T. Linder</name>
+				<name>R. Holmes</name>
 			</submitter>
 			<observers>
 				<name>T. Linder, R. Holmes, L. Horn</name>
@@ -25,59 +25,63 @@
 		</obsContext>
 		<obsData>
 			<optical>
-				<trkSub>None</trkSub>
+				<provID>2019 UJ2</provID>
+				<trkSub>K19U02J</trkSub>
 				<mode>CCD</mode>
 				<stn>807</stn>
-				<obsTime>2023-11-06T00:33:32.26Z</obsTime>
-				<ra>312.721958</ra>
-				<dec>-65.1845</dec>
-				<rmsRA>1.74</rmsRA>
-				<rmsDec>1.74</rmsDec>
+				<obsTime>2023-11-14T07:02:47.4Z</obsTime>
+				<ra>123.53775</ra>
+				<dec>-23.586222</dec>
+				<rmsRA>0.52</rmsRA>
+				<rmsDec>0.52</rmsDec>
 				<astCat>UCAC3</astCat>
-				<mag>21.36</mag>
-				<rmsMag>0.27</rmsMag>
+				<mag>19.94</mag>
+				<rmsMag>0.25</rmsMag>
 				<band>V</band>
 			</optical>
 			<optical>
-				<trkSub>None</trkSub>
+				<provID>2019 UJ2</provID>
+				<trkSub>K19U02J</trkSub>
 				<mode>CCD</mode>
 				<stn>807</stn>
-				<obsTime>2023-11-06T00:40:46.85Z</obsTime>
-				<ra>312.732792</ra>
-				<dec>-65.185611</dec>
-				<rmsRA>1.52</rmsRA>
-				<rmsDec>1.52</rmsDec>
+				<obsTime>2023-11-14T07:07:29.56Z</obsTime>
+				<ra>123.539917</ra>
+				<dec>-23.589278</dec>
+				<rmsRA>1.09</rmsRA>
+				<rmsDec>1.09</rmsDec>
 				<astCat>UCAC3</astCat>
-				<mag>20.84</mag>
-				<rmsMag>0.14</rmsMag>
+				<mag>21.95</mag>
+				<rmsMag>0.47</rmsMag>
 				<band>V</band>
 			</optical>
 			<optical>
-				<trkSub>None</trkSub>
+				<provID>2019 UJ2</provID>
+				<trkSub>K19U02J</trkSub>
 				<mode>CCD</mode>
 				<stn>807</stn>
-				<obsTime>2023-11-06T00:47:40.70Z</obsTime>
-				<ra>312.741792</ra>
-				<dec>-65.186056</dec>
-				<rmsRA>1.08</rmsRA>
-				<rmsDec>1.08</rmsDec>
+				<obsTime>2023-11-14T07:12:12.10Z</obsTime>
+				<ra>123.542125</ra>
+				<dec>-23.592528</dec>
+				<rmsRA>0.6</rmsRA>
+				<rmsDec>0.6</rmsDec>
 				<astCat>UCAC3</astCat>
-				<mag>20.41</mag>
-				<rmsMag>0.10</rmsMag>
+				<mag>20.89</mag>
+				<rmsMag>0.31</rmsMag>
 				<band>V</band>
 			</optical>
 			<optical>
-				<trkSub>None</trkSub>
+				<provID>2019 UJ2</provID>
+				<trkSub>K19U02J</trkSub>
 				<mode>CCD</mode>
 				<stn>807</stn>
-				<obsTime>2023-11-06T00:40:46.85Z</obsTime>
-				<ra>312.733292</ra>
-				<dec>-65.185472</dec>
-				<rmsRA>0.5</rmsRA>
-				<rmsDec>0.5</rmsDec>
+				<obsTime>2023-11-14T07:16:53.76Z</obsTime>
+				<ra>123.544417</ra>
+				<dec>-23.595389</dec>
+				<rmsRA>0.38</rmsRA>
+				<rmsDec>0.38</rmsDec>
 				<astCat>UCAC3</astCat>
-				<mag>21.40</mag>
-				<rmsMag>0.18</rmsMag>
+				<mag>20.61</mag>
+				<rmsMag>0.17</rmsMag>
 				<band>V</band>
 			</optical>
 		</obsData>
