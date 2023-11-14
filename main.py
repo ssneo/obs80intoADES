@@ -82,9 +82,16 @@ class autoOperations:
         Label( self.mp, text='POS_UNC', width=10).grid(row=10, column=6, sticky=W+E)
         Button( self.mp, text='Submit Obs', command=self.submit_obs ).grid(row=50, column=5, columnspan=2, sticky=W+E)
 
+        
+        self.dic = {}
+        self.currentNumberOfObs = 0
+
         self.reloadObs80Button()
 
         self.checkIfConfigFileWasUpdated()
+
+        
+        
         
         mainloop()
 
@@ -119,18 +126,25 @@ class autoOperations:
         #print (len( self.obs ) )
 
         self.checkBoxList = []
-        self.dic = {}
+        
         listOfHeaderValues = ["COD", "CON", "OBS", "MEA", "TEL", "ACK", "AC2", "NET", "---"]
         end = 20
         #if len( self.obs ) > 20:
         #    end = 20
         #else:
         #    end = len( self.obs )
+        #print ('self.currentNumberOfObs', self.currentNumberOfObs)
+        #print ('self.obs', self.obs)
+        #for key in self.obs:
+        #    print ('self.obs[key]', key, type(key) )
+            #if i in self.obs
         for i in range( 0, end ):
             useObs = True
             #print (self.obs80[i][0:3])
+
             
-            if len( self.obs) != 0 and i < len( self.obs ) : #is i variable greater than the number of obs, this means we need to send destroy commands
+            
+            if len( self.obs) != 0 and i < self.currentNumberOfObs : #is i variable greater than the number of obs, this means we need to send destroy commands
                 for j in listOfHeaderValues:
                     
                     if self.obs[i]['obs80'][0:3] == j:
@@ -182,17 +196,21 @@ class autoOperations:
                     self.dic[i]['label_pos_unc'].grid(row=row_value, column=6, sticky=W+E)
 
             else:
-                try:
-                    self.dic[i]['button'].destory
-                    self.dic[i]['entry_permid'].destory
-                    self.dic[i]['entry_provid'].destory
-                    self.dic[i]['label_obs80'].destory
-                    self.dic[i]['label_fwhm'].destory
-                    self.dic[i]['label_snr'].destory
-                    self.dic[i]['label_pos_und'].destory
-                except:
-                    #print ('no destory')
-                    pass
+                #try:
+                #print (i)
+                if i in self.dic:
+                    #print ('destroy', i)
+                    self.dic[i]['button'].destroy()
+                    self.dic[i]['entry_permid'].destroy()
+                    self.dic[i]['entry_provid'].destroy()
+                    self.dic[i]['label_obs80'].destroy()
+                    self.dic[i]['label_fwhm'].destroy()
+                    self.dic[i]['label_snr'].destroy()
+                    self.dic[i]['label_pos_unc'].destroy()
+                #except:
+                #else:
+                #    print ('no destory', i)
+                    #pass
 
     def readObs80(self):
 
@@ -261,6 +279,8 @@ class autoOperations:
                         catalog = self.obs80[i][4:-1]
 
             if useObs == True: #if the is not a header or the end line
+                #print ('self.value', self.value )
+                #print ('self.obs', self.obs )
                 self.obs[count] = {}
                 #from MPCReport.txt File
                 self.obs[count]['obs80'] = self.obs80[i][:-1]
@@ -412,6 +432,8 @@ class autoOperations:
 
                 #stop
                 count += 1
+
+        self.currentNumberOfObs = count
 
         with open("astrometrica_data.json", "w") as outfile:
             json.dump(self.obs, outfile)
