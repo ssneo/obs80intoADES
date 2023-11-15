@@ -51,8 +51,8 @@ class autoOperations:
         obs_types =['NEO', 'NEOCP', 'Unclassified', 'Comet', 'TNO', 'New NEO Candidate', 'New Comet', 'ARTSAT' ]
         self.obs_types_val = StringVar()
         self.obs_types_val.set( obs_types[0] )
-        obs_types_menu = OptionMenu(self.mp, self.obs_types_val, *obs_types)
-        obs_types_menu.grid( row = 50, column = 14, columnspan=4, sticky=W )
+        obs_types_menu = OptionMenu(self.mp, self.obs_types_val, *obs_types )
+        obs_types_menu.grid( row = 49, column = 14, columnspan=4, sticky=W )
 
         #load the selected_config_file
         with open( config_files[0] ) as infile:
@@ -106,7 +106,7 @@ class autoOperations:
         Label( self.mp, text='POS_UNC', width=10).grid(row=10, column=18, sticky=W+E)
         self.submit_button = Button( self.mp, text='Submit Obs', command=self.submit_obs, bg='Grey' )
         self.submit_button.grid(row=50, column=18, columnspan=2, sticky=W+E)
-        Button( self.mp, text='Build ADES', command=self.build_ades ).grid(row=50, column=16, columnspan=2, sticky=W+E)
+        Button( self.mp, text='Build ADES', command=self.build_ades ).grid(row=50, column=14, columnspan=2, sticky=W)
         Button( self.mp, text='Delete ADES File', command=self.delete_ades_file ).grid(row=50, column=0, columnspan=2, sticky=W+E)
 
         
@@ -393,9 +393,9 @@ class autoOperations:
                     length_of_jd = len( jd )
                     if jd == self.phot[j][0:length_of_jd]:
                         #print ('jd', jd)
-                        print ('snr', self.phot[j][30:35])
-                        print ('snr', self.phot[j][29:34])
-                        print ('snr', self.phot[j][28:34])
+                        #print ('snr', self.phot[j][30:35])
+                        #print ('snr', self.phot[j][29:34])
+                        #print ('snr', self.phot[j][28:34])
                         #self.obs[count]['phot_snr'] = self.phot[j][30:35]
                         self.obs[count]['phot_snr'] = self.phot[j][26:31]
                         #stop
