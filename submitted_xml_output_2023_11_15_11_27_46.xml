@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<provID>2023 VB8</provID>
+				<trkSub>K23V08B</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-11-15T04:59:32.93Z</obsTime>
+				<ra>68.134042</ra>
+				<dec>-19.228111</dec>
+				<rmsRA>0.17</rmsRA>
+				<rmsDec>0.17</rmsDec>
+				<astCat>UCAC3</astCat>
+				<mag>19.61</mag>
+				<rmsMag>0.06</rmsMag>
+				<band>V</band>
+			</optical>
+			<optical>
+				<provID>2023 VB8</provID>
+				<trkSub>K23V08B</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-11-15T05:04:50.2Z</obsTime>
+				<ra>68.125667</ra>
+				<dec>-19.222639</dec>
+				<rmsRA>0.27</rmsRA>
+				<rmsDec>0.27</rmsDec>
+				<astCat>UCAC3</astCat>
+				<mag>19.49</mag>
+				<rmsMag>0.06</rmsMag>
+				<band>V</band>
+			</optical>
+			<optical>
+				<provID>2023 VB8</provID>
+				<trkSub>K23V08B</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-11-15T05:10:14.88Z</obsTime>
+				<ra>68.116583</ra>
+				<dec>-19.217444</dec>
+				<rmsRA>0.15</rmsRA>
+				<rmsDec>0.15</rmsDec>
+				<astCat>UCAC3</astCat>
+				<mag>19.80</mag>
+				<rmsMag>0.06</rmsMag>
+				<band>V</band>
+			</optical>
+			<optical>
+				<provID>2023 VB8</provID>
+				<trkSub>K23V08B</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-11-15T05:15:32.83Z</obsTime>
+				<ra>68.107917</ra>
+				<dec>-19.212194</dec>
+				<rmsRA>0.19</rmsRA>
+				<rmsDec>0.19</rmsDec>
+				<astCat>UCAC3</astCat>
+				<mag>19.69</mag>
+				<rmsMag>0.07</rmsMag>
+				<band>V</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

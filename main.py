@@ -143,18 +143,25 @@ class autoOperations:
 
         for count in self.dic:
             #print (count)
-            if self.dic[count]['entry_fwhm'].get() != self.obs[count]['fwhm']: #if the user changes the fwhm value then update the pos_unc
+            if count in self.obs:
+                if self.dic[count]['entry_fwhm'].get() != self.obs[count]['fwhm']: #if the user changes the fwhm value then update the pos_unc
 
-                usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
-                if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                    usesnr = float( self.obs[count]['snr'] )
+                    usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                    if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                        usesnr = float( self.obs[count]['snr'] )
 
-                self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usesnr ) , 2)
+                    try: #when typing something could change and error out with the math
+                        self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usesnr ) , 2)
+                    except:
+                        pass
+                    self.dic[count]['label_pos_unc'].config(text='%s'%(self.obs[count]['pos_unc'] ) )
 
-                self.dic[count]['label_pos_unc'].config(text='%s'%(self.obs[count]['pos_unc'] ) )
-
-            if self.dic[count]['entry_mag'].get() != self.obs[count]['mag']:
-                self.obs[count]['mag'] = self.dic[count]['entry_mag'].get()
+                if self.dic[count]['entry_mag'].get() != self.obs[count]['mag']:
+                    self.obs[count]['mag'] = self.dic[count]['entry_mag'].get()
+            #else:
+                #print ('len(self.obs)', len(self.obs) )
+            #    for key in self.obs:
+                    #print ('key', key)
 
                 
 
@@ -191,6 +198,7 @@ class autoOperations:
             
             
             if i < self.currentNumberOfObs : #is i variable greater than the number of obs, this means we need to send destroy commands
+                #print ('i', i)
                 for j in listOfHeaderValues:
                     
                     if self.obs[i]['obs80'][0:3] == j:
@@ -233,6 +241,10 @@ class autoOperations:
 
                     self.dic[i]['entry_fwhm'] = Entry( width=15 )
                     self.dic[i]['entry_fwhm'].grid( row=row_value, column=10, sticky=W+E)
+                    #print ('self.currentNumberOfObs', self.currentNumberOfObs, 'len(self.obs)', len(self.obs))
+                    #print ('self.obs[i]', self.obs[i])
+                    #if i in self.obs: #I don't know yet why this error is occuring
+                        #print (self.obs[i] )
                     self.dic[i]['entry_fwhm'].insert(0, self.obs[i]['fwhm'] )
 
                     
@@ -259,14 +271,15 @@ class autoOperations:
 
             else:
                 #try:
-                #print (i)
+                print (i)
                 if i in self.dic:
-                    #print ('destroy', i)
+                    print ('destroy', i)
                     self.dic[i]['button'].destroy()
                     self.dic[i]['entry_permid'].destroy()
                     self.dic[i]['entry_provid'].destroy()
                     self.dic[i]['entry_trksub'].destroy()
                     self.dic[i]['entry_mag'].destroy()
+                    self.dic[i]['entry_fwhm'].destroy()
                     self.dic[i]['label_obs80'].destroy()
                     self.dic[i]['label_fwhm'].destroy()
                     self.dic[i]['label_snr'].destroy()
@@ -321,7 +334,7 @@ class autoOperations:
         tel_line = None
         count = 0
         for i in range( 0, len( self.obs80 ) ): #loop through each observations in the MPCReport.txt file
-
+            
             useObs = True
             
             for j in listOfHeaderValues:
@@ -341,12 +354,14 @@ class autoOperations:
                         acknowledge_email = self.obs80[i][4:-1]
                     if j == "NET":
                         catalog = self.obs80[i][4:-1]
+                    
 
             if useObs == True: #if the is not a header or the end line
                 #print ('self.value', self.value )
                 #print ('self.obs', self.obs )
                 self.obs[count] = {}
                 #from MPCReport.txt File
+                #print( self.obs80[i][:-1] )
                 self.obs[count]['obs80'] = self.obs80[i][:-1]
                 self.obs[count]['name'] = self.obs80[i][0:13]
                 if self.obs80[i][14] == 'C':
@@ -396,8 +411,8 @@ class autoOperations:
                         #print ('snr', self.phot[j][30:35])
                         #print ('snr', self.phot[j][29:34])
                         #print ('snr', self.phot[j][28:34])
-                        #self.obs[count]['phot_snr'] = self.phot[j][30:35]
-                        self.obs[count]['phot_snr'] = self.phot[j][26:31]
+                        self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                        #self.obs[count]['phot_snr'] = self.phot[j][26:31]
                         #stop
 
 
@@ -406,69 +421,102 @@ class autoOperations:
                 #match information from log.log File
                 for k in range( 0, len( self.log ) ):
                 #print (self.obs[count]['obs80'] )
-                #for k in range( 1816, len( self.log ) ): #for testing
+                #for k in range( 14155, len( self.log ) ): #for testing
                     #print ('count', count, 'k', k)
                     obsMatch = False
                     obsMatch_ra = False
                     obsMatch_dec = False
-                    #make sure log length line is more than 100 characters
-                    if len( self.log[k] ) > 100:
 
+                    #print('')
+                    if self.obs80[i][13] == 'K':
+                        #print ('k')
+                        obs80_no_k = self.obs80[i][0:13] + " " + self.obs80[i][14:-1]
+                        #print ('self.obs80[i][0:13]', self.obs80[i][0:13] )
+                        #print ('self.obs80[i][14:-1]', self.obs80[i][14:-1] )
+                        #print ('obs80_no_k', obs80_no_k)
+                    else:
+                        obs80_no_k = self.obs80[i][0:-1]
+                    #print ('self.obs80[i]', self.obs80[i][:-1])
+                    #print (k, 'self.log[k]', self.log[k][:-1])
+                    if obs80_no_k == self.log[k][:-1]:
+                        #print ('True')
+                        #print( obs80_no_k )
+                        #print( self.log[k-2][:-1] )
+                        #print( self.log[k-1][:-1] )
+
+
+                
+                    #make sure log length line is more than 100 characters
+                    #if len( self.log[k] ) > 100:
+                        #print( k, self.log[k] )
                         #if k > 118 and k < 120:
-                        #    print (self.log[k] )
-                        #    print (self.log[k][2:4])
-                        #    print (self.log[k][5:7])
-                        #    print (self.log[k][8:13])
-                        #    print (self.log[k][8:12])
-                        #    print (self.log[k][25:28])
-                        #    print (self.log[k][29:31])
-                        #    print (self.log[k][32:37])
-                        #    print (self.log[k][32:36])
+                        #print (self.log[k] )
+                        #print (self.log[k][2:4])
+                        #print (self.log[k][5:7])
+                        #print (self.log[k][8:13])
+                        #print (self.log[k][8:12])
+                        #print (self.log[k][25:28])
+                        #print (self.log[k][29:31])
+                        #print (self.log[k][32:37])
+                        #print (self.log[k][32:36])
 
                         #check if RA matches
-                        if self.log[k][2:4] == self.obs[count]['ra_hour']: #check that ra_hour matches 
+                        #if self.log[k][2:4] == self.obs[count]['ra_hour']: #check that ra_hour matches 
                             #print ('yes1')
-                            if self.log[k][5:7] == self.obs[count]['ra_minutes']: #check that ra_minute matches
+                            #if self.log[k][5:7] == self.obs[count]['ra_minutes']: #check that ra_minute matches
                                 #print ('yes2')
-                                if len( self.obs[count]['ra_seconds'] ) == 6: #there is a rounding issue to deal with in the obs80 line depending on the precision of the format
+                                #if len( self.obs[count]['ra_seconds'] ) == 6: #there is a rounding issue to deal with in the obs80 line depending on the precision of the format
                                     #if 6 characters long then it should be a direct match to the log file
                                     #print ('yes3')
-                                    if self.log[k][8:13] == self.obs[count]['ra_seconds']:
-                                        obsMatch_ra = True
-                                elif len( self.obs[count]['ra_seconds'] ) == 5:
+                                #    if self.log[k][8:13] == self.obs[count]['ra_seconds']:
+                                #        obsMatch_ra = True
+                                #elif len( self.obs[count]['ra_seconds'] ) == 5:
                                     #print ('yes4')
-                                    #print (self.log[k][8:12] == self.obs[count]['ra_seconds'][:-1], self.log[k][8:12], self.obs[count]['ra_seconds'][:-1])
-                                    if self.log[k][8:12] == self.obs[count]['ra_seconds'][:-1]: #if only five characters then only going to check five values
-                                        obsMatch_ra = True
+                                    #print ( round( float( self.log[k][8:14] ), 1) == round( float( self.obs[count]['ra_seconds'][:-1] ), 1), round( float( self.log[k][8:14] ), 1), round( float( self.obs[count]['ra_seconds'][:-1] ), 1) )
+                                    #print (self.log[k][8:14] == self.obs[count]['ra_seconds'][:-1], self.log[k][8:14], self.obs[count]['ra_seconds'][:-1])
+                                #    if round( float( self.log[k][8:14] ), 1) == round( float( self.obs[count]['ra_seconds'][:-1] ), 1 ): #if only five characters then only going to check five values
+                                #        obsMatch_ra = True
 
-                        #print (obsMatch_ra)
+                                #print (obsMatch_ra)
 
-                        if obsMatch_ra == True:
+                        #if obsMatch_ra == True:
                             #print ('count', self.obs[count]['obs80'] )
                             #print ('k', self.log[k])
-                            if self.log[k][25:28] == self.obs[count]['dec_degrees']: #check that dec_degrees matches 
+                            #if self.log[k][25:28] == self.obs[count]['dec_degrees']: #check that dec_degrees matches 
                                 #print ('yes1dec')
-                                if self.log[k][29:31] == self.obs[count]['dec_minutes']: #check that dec_degrees matches
+                                #if self.log[k][29:31] == self.obs[count]['dec_minutes']: #check that dec_degrees matches
                                     #print ('yes2dec')
-                                    if len( self.obs[count]['dec_seconds'] ) == 5: #there is a rounding issue to deal with in the obs80 line depending on the precision of the format
+                                    #print ('self.log[k][32:38]', self.log[k][32:38])
+                                    #print ('round( float( self.log[k][32:38] ), 1)', round( float( self.log[k][32:38] ), 1) )
+                                    #print ("self.obs[count]['dec_seconds']", self.obs[count]['dec_seconds'])
+                                    #print ( round( float( self.log[k][32:38] ), 1) == round( float( self.obs[count]['dec_seconds'][:-1] ), 1), round( float( self.log[k][32:38] ), 1), round( float( self.obs[count]['dec_seconds'][:-1]  ), 1) )
+                                    #dec_second_diff = float( self.log[k][32:38] ) - float( self.obs[count]['dec_seconds'] )
+                                    #print ('dec_second_diff', dec_second_diff)
+                                    #print ('float( self.log[k][32:38] )', float( self.log[k][32:38] ) )
+                                    #print ("float( self.obs[count]['dec_seconds'][:-1]", float( self.obs[count]['dec_seconds'] ) )
+                                    #if round( float( self.log[k][32:37]), 1) == round( float( self.obs[count]['dec_seconds']), 1):
+                                    #if abs( dec_second_diff) < 0.1:
+                                    #        obsMatch_dec = True
+
+                                    #if len( self.obs[count]['dec_seconds'] ) == 5: #there is a rounding issue to deal with in the obs80 line depending on the precision of the format
                                         #if 6 characters long then it should be a direct match to the log file
                                         #print ('yes3dec')
                                         #The dec_seconds in the log file are saved as xx.yy. However, Obs80 could have xx.y but you can't just compare the .y because of rounding
                                         #therefore, if dec_seconds has a length of 5, then we know it is xx.yy. 
                                         #print (self.log[k][32:37] == self.obs[count]['dec_seconds'], self.log[k][32:37], self.obs[count]['dec_seconds'])
-                                        #print (self.log[k][32:36] == self.obs[count]['dec_seconds'][:-1], self.log[k][32:36], self.obs[count]['dec_seconds'][:-1])
+                                    #    print ( round( float( self.log[k][32:37] ), 1) == round( float( self.obs[count]['dec_seconds'][:-1] ), 1), round( float( self.log[k][32:37] ), 1), round( float( self.obs[count]['dec_seconds'][:-1]  ), 1) )
                                         #stop
-                                        if self.log[k][32:37] == self.obs[count]['dec_seconds']:
-                                            obsMatch_dec = True
+                                    #    if self.log[k][32:37] == self.obs[count]['dec_seconds']:
+                                    #        obsMatch_dec = True
 
-                                    elif len( self.obs[count]['dec_seconds'] ) == 4:
-                                        #print ('yes4dec')
+                                    #elif len( self.obs[count]['dec_seconds'] ) == 4:
+                                    #    print ('yes4dec')
                                         #a dec_seconds length of 4 means we have xx.y therefore we need to round the log file value prior to comparing
-                                        log_file_dec_secods = float( self.log[k][32:37] )
-                                        log_file_dec_secods = round ( log_file_dec_secods, 1)
-                                        #print (log_file_dec_secods == float( self.obs[count]['dec_seconds'] ) , log_file_dec_secods, float( self.obs[count]['dec_seconds'] ) )
-                                        if log_file_dec_secods == float( self.obs[count]['dec_seconds'] ): #if only five characters then only going to check five values
-                                            obsMatch_dec = True
+                                    #    log_file_dec_secods = float( self.log[k][32:38] )
+                                    #    log_file_dec_secods = round ( log_file_dec_secods, 1)
+                                    #    print (log_file_dec_secods == float( self.obs[count]['dec_seconds'] ) , log_file_dec_secods, float( self.obs[count]['dec_seconds'] ) )
+                                    #    if log_file_dec_secods == float( self.obs[count]['dec_seconds'] ): #if only five characters then only going to check five values
+                                    #        obsMatch_dec = True
                         
                         #if obsMatch_ra == True and obsMatch_dec == True:
                             #print (self.log[k] )
@@ -485,30 +533,36 @@ class autoOperations:
 
 
                         #print ( 'obsMatch_ra', obsMatch_ra, 'obsMatch_dec', obsMatch_dec)
-                        if obsMatch_dec == True and obsMatch_ra == True:
-                            self.obs[count]['ra_error_arc_minutes']     = self.log[k+1][18:22]
-                            self.obs[count]['dec_error_arc_minutes']    = self.log[k+1][41:45]
-                            self.obs[count]['mag']                      = self.log[k][48:53]
-                            self.obs[count]['mag_error']                = self.log[k+1][57:61]
-                            self.obs[count]['x_pixel']                  = self.log[k][64:71]
-                            self.obs[count]['y_pixel']                  = self.log[k][73:80]
-                            self.obs[count]['flux']                     = self.log[k][81:88]
-                            if float( self.log[k][90:94] ) == 0.0: #if fwhm is reported to be zero, then assume a 5 for fwhm
-                                self.obs[count]['fwhm']                 = float( self.config["IF_NO_FWHM_IS_CALCULTED_USE_VALUE"] )
-                            else: 
-                                self.obs[count]['fwhm']                 = self.log[k][90:94]
-                            self.obs[count]['snr']                      = self.log[k][95:102]
-                            self.obs[count]['fit_rms']                  = self.log[k][103:108]
-                            
-                            usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
-                            if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                                usesnr = float( self.obs[count]['snr'] )
-
-                            self.obs[count]['usesnr']                  = usesnr
-                            self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usesnr ) , 2)
-                            break #this will break the k loop
-                            #stop
+                        #if obsMatch_dec == True and obsMatch_ra == True:
+                        #print ('self.log[k], k', self.log[k], k, len(self.log[k]))
+                        self.obs[count]['ra_error_arc_minutes']     = self.log[k-1][18:22]
+                        self.obs[count]['dec_error_arc_minutes']    = self.log[k-1][41:45]
+                        self.obs[count]['mag']                      = self.log[k-2][48:53]
+                        self.obs[count]['mag_error']                = self.log[k-1][57:61]
+                        self.obs[count]['x_pixel']                  = self.log[k-2][64:71]
+                        self.obs[count]['y_pixel']                  = self.log[k-2][73:80]
+                        self.obs[count]['flux']                     = self.log[k-2][81:88]
+                        #print ( 'fwhm', self.log[k-2][90:94] )
+                        if float( self.log[k-2][90:94] ) == 0.0: #if fwhm is reported to be zero, then assume a 5 for fwhm
+                            self.obs[count]['fwhm']                 = float( self.config["IF_NO_FWHM_IS_CALCULTED_USE_VALUE"] )
+                        else: 
+                            self.obs[count]['fwhm']                 = self.log[k-2][90:94]
                         
+                        #print ( 'self.log[k][90:94]', self.log[k][90:94])
+                        #print ( 'self.log[k][85:100]', self.log[k][85:100])
+                        #print ('count', count, 'fwhm', self.obs[count]['fwhm'])
+                        self.obs[count]['snr']                      = self.log[k-2][95:102]
+                        self.obs[count]['fit_rms']                  = self.log[k-2][103:108]
+                        
+                        usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                        if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                            usesnr = float( self.obs[count]['snr'] )
+
+                        self.obs[count]['usesnr']                  = usesnr
+                        self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usesnr ) , 2)
+                        break #this will break the k loop
+                        #stop
+                    
                                 
 
 
@@ -521,12 +575,16 @@ class autoOperations:
                 count += 1
 
         self.currentNumberOfObs = count
+        print ('len(self.obs)', len(self.obs) )
+        print ('self.currentNumberOfObs', self.currentNumberOfObs)
 
         with open("astrometrica_data.json", "w") as outfile:
             json.dump(self.obs, outfile)
 
         with open("astrometrica_header.json", "w") as outfile:
             json.dump(self.obs, outfile)
+
+        self.submit_button.config(bg='Grey')
 
     def update_xml_file_list(self):
 
@@ -578,6 +636,7 @@ class autoOperations:
     def submit_obs( self ):
 
         xml_filename = self.build_xml()
+        self.update_xml_file_list()
 
         #xml_filename = self.xml_val.get()
 
@@ -623,7 +682,7 @@ class autoOperations:
 
             self.update_xml_file_list()
         else:
-            print ('MPC Rejected the Submission with curl error of: '%(res))
+            print ('MPC Rejected the Submission with curl error of: %s'%(res))
             self.submit_button.config(bg='Red')
 
     def build_xml( self ):
