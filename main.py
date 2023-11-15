@@ -145,11 +145,11 @@ class autoOperations:
             #print (count)
             if self.dic[count]['entry_fwhm'].get() != self.obs[count]['fwhm']: #if the user changes the fwhm value then update the pos_unc
 
-                usefwhm = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
                 if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                    usefwhm = float( self.obs[count]['snr'] )
+                    usesnr = float( self.obs[count]['snr'] )
 
-                self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usefwhm ) , 2)
+                self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usesnr ) , 2)
 
                 self.dic[count]['label_pos_unc'].config(text='%s'%(self.obs[count]['pos_unc'] ) )
 
@@ -243,8 +243,8 @@ class autoOperations:
                     self.dic[i]['label_obs80'].grid(row=row_value, column=12, sticky=W)
 
                     if 'fwhm' in self.obs[i]: #if 'fwhm key does not exist there was a fail
-                        self.dic[i]['label_fwhm'] = Label( self.mp, text=self.obs[i]['usefwhm'] )
-                        self.dic[i]['label_snr'] = Label( self.mp, text=self.obs[i]['snr'] )
+                        self.dic[i]['label_fwhm'] = Label( self.mp, text=self.obs[i]['fwhm'] )
+                        self.dic[i]['label_snr'] = Label( self.mp, text=self.obs[i]['usesnr'] )
                         self.dic[i]['label_pos_unc'] = Label( self.mp, text=self.obs[i]['pos_unc'] )
                     else:
                         self.dic[i]['label_fwhm'] = Label( self.mp, text='n/a', bg='red' )
@@ -500,12 +500,12 @@ class autoOperations:
                             self.obs[count]['snr']                      = self.log[k][95:102]
                             self.obs[count]['fit_rms']                  = self.log[k][103:108]
                             
-                            usefwhm = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
+                            usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
                             if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                                usefwhm = float( self.obs[count]['snr'] )
+                                usesnr = float( self.obs[count]['snr'] )
 
-                            self.obs[count]['usefwhm']                  = usefwhm
-                            self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usefwhm ) , 2)
+                            self.obs[count]['usesnr']                  = usesnr
+                            self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usesnr ) , 2)
                             break #this will break the k loop
                             #stop
                         
