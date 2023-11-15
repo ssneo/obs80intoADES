@@ -182,6 +182,19 @@ class autoOperations:
         
         listOfHeaderValues = ["COD", "CON", "OBS", "MEA", "TEL", "ACK", "AC2", "NET", "---"]
         end = 20
+        for i in range( 0, end):
+            if i in self.dic:
+                #print ('destroy', i)
+                self.dic[i]['button'].destroy()
+                self.dic[i]['entry_permid'].destroy()
+                self.dic[i]['entry_provid'].destroy()
+                self.dic[i]['entry_trksub'].destroy()
+                self.dic[i]['entry_mag'].destroy()
+                self.dic[i]['entry_fwhm'].destroy()
+                self.dic[i]['label_obs80'].destroy()
+                self.dic[i]['label_fwhm'].destroy()
+                self.dic[i]['label_snr'].destroy()
+                self.dic[i]['label_pos_unc'].destroy()
         #if len( self.obs ) > 20:
         #    end = 20
         #else:
@@ -269,21 +282,10 @@ class autoOperations:
                     self.dic[i]['label_snr'].grid(row=row_value, column=16, sticky=W+E)
                     self.dic[i]['label_pos_unc'].grid(row=row_value, column=18, sticky=W+E)
 
-            else:
+            #else:
                 #try:
-                print (i)
-                if i in self.dic:
-                    print ('destroy', i)
-                    self.dic[i]['button'].destroy()
-                    self.dic[i]['entry_permid'].destroy()
-                    self.dic[i]['entry_provid'].destroy()
-                    self.dic[i]['entry_trksub'].destroy()
-                    self.dic[i]['entry_mag'].destroy()
-                    self.dic[i]['entry_fwhm'].destroy()
-                    self.dic[i]['label_obs80'].destroy()
-                    self.dic[i]['label_fwhm'].destroy()
-                    self.dic[i]['label_snr'].destroy()
-                    self.dic[i]['label_pos_unc'].destroy()
+            #    print (i)
+                
                 #except:
                 #else:
                 #    print ('no destory', i)
@@ -405,14 +407,31 @@ class autoOperations:
                 jd = self.calculteJD( count )
                 #print (jd)
                 for j in range( 0, len( self.phot ) ):
-                    length_of_jd = len( jd )
-                    if jd == self.phot[j][0:length_of_jd]:
-                        #print ('jd', jd)
-                        #print ('snr', self.phot[j][30:35])
-                        #print ('snr', self.phot[j][29:34])
-                        #print ('snr', self.phot[j][28:34])
-                        self.obs[count]['phot_snr'] = self.phot[j][30:35]
-                        #self.obs[count]['phot_snr'] = self.phot[j][26:31]
+                    if self.phot[j][0] != 'O' and self.phot[j][0] != 'O' and self.phot[j][0] != 'C' and self.phot[j][0] != 'T' and self.phot[j][0] != 'E' and self.phot[j][0] != '-' and self.phot[j][0] != ' ':
+                        #print (self.phot[j][0])
+                        #print (self.phot[j])
+                        phot_line = self.phot[j].split(' ')
+                        #print ('1',phot_line)
+                        for mm in range(0, 20):
+                            try:
+                                phot_line.remove('') #remove the spaces
+                            except ValueError:
+                                break
+
+                        #print ('2',phot_line)
+                        #stop
+                        #for ll in phot_line:
+                        #    if ll == ' ':
+                        #        phot_line
+                        #length_of_jd = len( jd )
+                        if jd == phot_line[0]:
+                            #print ('jd', jd)
+                            #print ('snr', self.phot[j][30:35])
+                            #print ('snr', self.phot[j][29:34])
+                            #print ('snr', self.phot[j][28:34])
+                            self.obs[count]['phot_snr'] = phot_line[5]
+                            #self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                            #self.obs[count]['phot_snr'] = self.phot[j][26:31]
                         #stop
 
 
@@ -575,8 +594,8 @@ class autoOperations:
                 count += 1
 
         self.currentNumberOfObs = count
-        print ('len(self.obs)', len(self.obs) )
-        print ('self.currentNumberOfObs', self.currentNumberOfObs)
+        #print ('len(self.obs)', len(self.obs) )
+        #print ('self.currentNumberOfObs', self.currentNumberOfObs)
 
         with open("astrometrica_data.json", "w") as outfile:
             json.dump(self.obs, outfile)
