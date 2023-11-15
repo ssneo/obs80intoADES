@@ -394,7 +394,7 @@ class autoOperations:
                     if jd == self.phot[j][0:length_of_jd]:
                         #print ('jd', jd)
                         #print ('snr', self.phot[j][30:35])
-                        self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                        self.obs[count]['phot_snr'] = self.phot[j][29:34]
                         #stop
 
 
@@ -598,11 +598,11 @@ class autoOperations:
         #real submission
         command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
 
-        #print (command)
+        print (command)
 
         res = os.system( command )
 
-        #print ('res', res)
+        print ('res', res)
 
         if res == 0:
             print ('MPC Accepted Submission')
