@@ -396,7 +396,8 @@ class autoOperations:
                         print ('snr', self.phot[j][30:35])
                         print ('snr', self.phot[j][29:34])
                         print ('snr', self.phot[j][28:34])
-                        self.obs[count]['phot_snr'] = self.phot[j][28:34]
+                        #self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                        self.obs[count]['phot_snr'] = self.phot[j][26:31]
                         #stop
 
 
