@@ -424,7 +424,8 @@ class autoOperations:
                         #    if ll == ' ':
                         #        phot_line
                         #length_of_jd = len( jd )
-                        if jd == phot_line[0]:
+                        #print (type(jd), type(phot_line[0]), float(jd) == float(phot_line[0]) )
+                        if float( jd) == float( phot_line[0] ):
                             #print ('jd', jd)
                             #print ('snr', self.phot[j][30:35])
                             #print ('snr', self.phot[j][29:34])
