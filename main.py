@@ -232,24 +232,28 @@ class autoOperations:
                     self.dic[i]['entry_permid'] = Entry(  width=15 )
                     self.dic[i]['entry_permid'].grid( row=row_value, column=2, sticky=W+E)
                     if permid != None:
+                        self.dic[i]['entry_permid'].delete(0, 'end' )
                         self.dic[i]['entry_permid'].insert(0, permid)
                     
 
                     self.dic[i]['entry_provid'] = Entry( width=15 )
                     self.dic[i]['entry_provid'].grid( row=row_value, column=4, sticky=W+E)
                     if provid != None:
+                        self.dic[i]['entry_provid'].delete(0, 'end' )
                         self.dic[i]['entry_provid'].insert(0, provid)
 
                     self.dic[i]['entry_trksub'] = Entry( width=15 )
                     self.dic[i]['entry_trksub'].grid( row=row_value, column=6, sticky=W+E)
                     if trksub != None:
+                        self.dic[i]['entry_trksub'].delete(0, 'end' )
                         self.dic[i]['entry_trksub'].insert(0, trksub)
 
                     
 
                     self.dic[i]['entry_mag'] = Entry( width=8 )
                     self.dic[i]['entry_mag'].grid( row=row_value, column=8, sticky=W+E)
-                    
+                    self.dic[i]['entry_mag'].delete(0, 'end' )
+                    #print ("self.obs[i]['mag']", self.obs[i]['mag'])
                     self.dic[i]['entry_mag'].insert(0, self.obs[i]['mag'])
 
                     self.dic[i]['entry_fwhm'] = Entry( width=15 )
@@ -407,6 +411,7 @@ class autoOperations:
                 jd = self.calculteJD( count )
                 #print (jd)
                 snr_column_number = None
+                mag_column_number = None
                 for j in range( 0, len( self.phot ) ):
                     if self.phot[j][0] != 'O' and self.phot[j][0] != 'O' and self.phot[j][0] != 'C' and self.phot[j][0] != 'T' and self.phot[j][0] != 'E' and self.phot[j][0] != '-' :
 
@@ -424,6 +429,8 @@ class autoOperations:
                             for mm in range(0, len( header_line ) ):
                                 if header_line[mm] == 'SNR':
                                     snr_column_number = mm
+                                if header_line[mm] == 'mag':
+                                    mag_column_number = mm
 
                         #print (snr_column_number)
                         #stop
@@ -454,6 +461,7 @@ class autoOperations:
                                 #print ('snr', self.phot[j][29:34])
                                 #print ('snr', self.phot[j][28:34])
                                 self.obs[count]['phot_snr'] = phot_line[snr_column_number + 1] #there is a V value in there.
+                                #self.obs[count]['mag'] = phot_line[mag_column_number ]
                                 #self.obs[count]['phot_snr'] = phot_line[5]
                                 #self.obs[count]['phot_snr'] = self.phot[j][30:35]
                                 #self.obs[count]['phot_snr'] = self.phot[j][26:31]
@@ -579,24 +587,44 @@ class autoOperations:
                         #print ( 'obsMatch_ra', obsMatch_ra, 'obsMatch_dec', obsMatch_dec)
                         #if obsMatch_dec == True and obsMatch_ra == True:
                         #print ('self.log[k], k', self.log[k], k, len(self.log[k]))
+
+                        obs_line = self.log[k-2].split(' ')
+                        for mm in range(0, 50):
+                            try:
+                                obs_line.remove('') #remove the spaces
+                            except ValueError:
+                                break
+
+                        
+
                         self.obs[count]['ra_error_arc_minutes']     = self.log[k-1][18:22]
                         self.obs[count]['dec_error_arc_minutes']    = self.log[k-1][41:45]
-                        self.obs[count]['mag']                      = self.log[k-2][48:53]
+                        #self.obs[count]['mag']                      = self.log[k-2][48:53]
                         self.obs[count]['mag_error']                = self.log[k-1][57:61]
-                        self.obs[count]['x_pixel']                  = self.log[k-2][64:71]
-                        self.obs[count]['y_pixel']                  = self.log[k-2][73:80]
-                        self.obs[count]['flux']                     = self.log[k-2][81:88]
+                        #self.obs[count]['x_pixel']                  = self.log[k-2][64:71]
+                        #self.obs[count]['y_pixel']                  = self.log[k-2][73:80]
+                        #self.obs[count]['flux']                     = self.log[k-2][81:88]
                         #print ( 'fwhm', self.log[k-2][90:94] )
                         if float( self.log[k-2][90:94] ) == 0.0: #if fwhm is reported to be zero, then assume a 5 for fwhm
                             self.obs[count]['fwhm']                 = float( self.config["IF_NO_FWHM_IS_CALCULTED_USE_VALUE"] )
                         else: 
-                            self.obs[count]['fwhm']                 = self.log[k-2][90:94]
+                            #self.obs[count]['fwhm']                 = self.log[k-2][90:94]
+                            self.obs[count]['fwhm']                  = obs_line[ len(obs_line) - 3 ]
                         
                         #print ( 'self.log[k][90:94]', self.log[k][90:94])
                         #print ( 'self.log[k][85:100]', self.log[k][85:100])
                         #print ('count', count, 'fwhm', self.obs[count]['fwhm'])
-                        self.obs[count]['snr']                      = self.log[k-2][95:102] #not used because of issues with spacing
-                        self.obs[count]['fit_rms']                  = self.log[k-2][103:108]
+                        #self.obs[count]['snr']                      = self.log[k-2][95:102] #not used because of issues with spacing
+                        #self.obs[count]['fit_rms']                  = self.log[k-2][103:108]
+
+                        self.obs[count]['x_pixel']                  = obs_line[ len(obs_line) - 6 ]
+                        self.obs[count]['y_pixel']                  = obs_line[ len(obs_line) - 5 ]
+                        self.obs[count]['flux']                     = obs_line[ len(obs_line) - 4 ]
+                        self.obs[count]['snr']                      = obs_line[ len(obs_line) - 2 ]
+                        self.obs[count]['fit_rms']                  = obs_line[ len(obs_line) - 1 ]
+
+
+
 
                         #print ('snr', self.log[k-2][95:102])
                         #print ('snr', self.log[k-2][90:105])
