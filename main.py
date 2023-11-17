@@ -406,34 +406,58 @@ class autoOperations:
 
                 jd = self.calculteJD( count )
                 #print (jd)
+                snr_column_number = None
                 for j in range( 0, len( self.phot ) ):
-                    if self.phot[j][0] != 'O' and self.phot[j][0] != 'O' and self.phot[j][0] != 'C' and self.phot[j][0] != 'T' and self.phot[j][0] != 'E' and self.phot[j][0] != '-' and self.phot[j][0] != ' ':
-                        #print (self.phot[j][0])
-                        #print (self.phot[j])
-                        phot_line = self.phot[j].split(' ')
-                        #print ('1',phot_line)
-                        for mm in range(0, 20):
-                            try:
-                                phot_line.remove('') #remove the spaces
-                            except ValueError:
-                                break
+                    if self.phot[j][0] != 'O' and self.phot[j][0] != 'O' and self.phot[j][0] != 'C' and self.phot[j][0] != 'T' and self.phot[j][0] != 'E' and self.phot[j][0] != '-' :
 
-                        #print ('2',phot_line)
+                        #need to determine which order the columns are in.
+                        if self.phot[j][0] == ' ': #this is the header line
+                            header_line = self.phot[j].split(' ')
+                            #print ('header_line', header_line)
+                            for mm in range(0, 50):
+                                try:
+                                    header_line.remove('')
+                                except ValueError:
+                                    break
+                            #print ('header_line', header_line)
+
+                            for mm in range(0, len( header_line ) ):
+                                if header_line[mm] == 'SNR':
+                                    snr_column_number = mm
+
+                        #print (snr_column_number)
                         #stop
-                        #for ll in phot_line:
-                        #    if ll == ' ':
-                        #        phot_line
-                        #length_of_jd = len( jd )
-                        #print (type(jd), type(phot_line[0]), float(jd) == float(phot_line[0]) )
-                        if float( jd) == float( phot_line[0] ):
-                            #print ('jd', jd)
-                            #print ('snr', self.phot[j][30:35])
-                            #print ('snr', self.phot[j][29:34])
-                            #print ('snr', self.phot[j][28:34])
-                            self.obs[count]['phot_snr'] = phot_line[5]
-                            #self.obs[count]['phot_snr'] = self.phot[j][30:35]
-                            #self.obs[count]['phot_snr'] = self.phot[j][26:31]
-                        #stop
+                        
+                        if self.phot[j][0] != ' ':
+                            #print (self.phot[j][0])
+                            #print (self.phot[j])
+                            #if self
+                            phot_line = self.phot[j].split(' ')
+                            #print ('1',phot_line)
+                            for mm in range(0, 20):
+                                try:
+                                    phot_line.remove('') #remove the spaces
+                                except ValueError:
+                                    break
+
+                            #print ('2',phot_line)
+                            #stop
+                            #for ll in phot_line:
+                            #    if ll == ' ':
+                            #        phot_line
+                            #length_of_jd = len( jd )
+                            
+                            #print (type(jd), type(phot_line[0]), float(jd) == float(phot_line[0]) )
+                            if float( jd) == float( phot_line[0] ):
+                                #print ('jd', jd, phot_line)
+                                #print ('snr', self.phot[j][30:35])
+                                #print ('snr', self.phot[j][29:34])
+                                #print ('snr', self.phot[j][28:34])
+                                self.obs[count]['phot_snr'] = phot_line[snr_column_number + 1] #there is a V value in there.
+                                #self.obs[count]['phot_snr'] = phot_line[5]
+                                #self.obs[count]['phot_snr'] = self.phot[j][30:35]
+                                #self.obs[count]['phot_snr'] = self.phot[j][26:31]
+                            #stop
 
 
 
