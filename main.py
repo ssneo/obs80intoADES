@@ -147,8 +147,8 @@ class autoOperations:
                 if self.dic[count]['entry_fwhm'].get() != self.obs[count]['fwhm']: #if the user changes the fwhm value then update the pos_unc
 
                     usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
-                    if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                        usesnr = float( self.obs[count]['snr'] )
+                    #if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                    #    usesnr = float( self.obs[count]['snr'] )
 
                     try: #when typing something could change and error out with the math
                         self.obs[count]['pos_unc']  = round( ( float( self.dic[count]['entry_fwhm'].get() ) / usesnr ) , 2)
@@ -595,12 +595,15 @@ class autoOperations:
                         #print ( 'self.log[k][90:94]', self.log[k][90:94])
                         #print ( 'self.log[k][85:100]', self.log[k][85:100])
                         #print ('count', count, 'fwhm', self.obs[count]['fwhm'])
-                        self.obs[count]['snr']                      = self.log[k-2][95:102]
+                        self.obs[count]['snr']                      = self.log[k-2][95:102] #not used because of issues with spacing
                         self.obs[count]['fit_rms']                  = self.log[k-2][103:108]
+
+                        #print ('snr', self.log[k-2][95:102])
+                        #print ('snr', self.log[k-2][90:105])
                         
                         usesnr = float( self.obs[count]['phot_snr'] ) #default use the value from the photometry file
-                        if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
-                            usesnr = float( self.obs[count]['snr'] )
+                        #if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
+                        #    usesnr = float( self.obs[count]['snr'] )
 
                         self.obs[count]['usesnr']                  = usesnr
                         self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usesnr ) , 2)
