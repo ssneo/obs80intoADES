@@ -617,9 +617,9 @@ class autoOperations:
                         #self.obs[count]['snr']                      = self.log[k-2][95:102] #not used because of issues with spacing
                         #self.obs[count]['fit_rms']                  = self.log[k-2][103:108]
 
-                        self.obs[count]['x_pixel']                  = obs_line[ len(obs_line) - 6 ]
-                        self.obs[count]['y_pixel']                  = obs_line[ len(obs_line) - 5 ]
-                        self.obs[count]['flux']                     = obs_line[ len(obs_line) - 4 ]
+                        #self.obs[count]['x_pixel']                  = obs_line[ len(obs_line) - 6 ]
+                        #self.obs[count]['y_pixel']                  = obs_line[ len(obs_line) - 5 ]
+                        #self.obs[count]['flux']                     = obs_line[ len(obs_line) - 4 ]
                         self.obs[count]['snr']                      = obs_line[ len(obs_line) - 2 ]
                         self.obs[count]['fit_rms']                  = obs_line[ len(obs_line) - 1 ]
 
