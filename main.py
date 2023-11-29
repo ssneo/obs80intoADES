@@ -262,6 +262,7 @@ class autoOperations:
                     #print ('self.obs[i]', self.obs[i])
                     #if i in self.obs: #I don't know yet why this error is occuring
                         #print (self.obs[i] )
+                    #print ('self.obs[i]', self.obs[i])
                     self.dic[i]['entry_fwhm'].insert(0, self.obs[i]['fwhm'] )
 
                     
@@ -460,7 +461,13 @@ class autoOperations:
                             
                             #print (type(jd), type(phot_line[0]), float(jd) == float(phot_line[0]) )
                             if float( jd) == float( phot_line[0] ):
-                                #print ('jd', jd, phot_line)
+                                #print ('jd', jd, phot_line, len(phot_line))
+                                if len(phot_line) == 9: #this mean it seperated Gaia and DR2
+                                    phot_line[6] = '%s %s'%(phot_line[6], phot_line[7])
+                                    phot_line[7] = phot_line[8]
+                                    del phot_line[8]
+                                #print ('jd', jd, phot_line, len(phot_line))
+
                                 #print ('snr', self.phot[j][30:35])
                                 #print ('snr', self.phot[j][29:34])
                                 #print ('snr', self.phot[j][28:34])
@@ -609,11 +616,14 @@ class autoOperations:
                         #self.obs[count]['y_pixel']                  = self.log[k-2][73:80]
                         #self.obs[count]['flux']                     = self.log[k-2][81:88]
                         #print ( 'fwhm', self.log[k-2][90:94] )
+                        #print ( 'fwhm', self.log[k-2][80:100] )
                         if float( self.log[k-2][90:94] ) == 0.0: #if fwhm is reported to be zero, then assume a 5 for fwhm
                             self.obs[count]['fwhm']                 = float( self.config["IF_NO_FWHM_IS_CALCULTED_USE_VALUE"] )
                         else: 
                             #self.obs[count]['fwhm']                 = self.log[k-2][90:94]
                             self.obs[count]['fwhm']                  = obs_line[ len(obs_line) - 3 ]
+
+                        #print ('testing', self.obs[count]['fwhm'] )
                         
                         #print ( 'self.log[k][90:94]', self.log[k][90:94])
                         #print ( 'self.log[k][85:100]', self.log[k][85:100])
