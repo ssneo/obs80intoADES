@@ -404,6 +404,10 @@ class autoOperations:
                 self.header['acknowledge_email'] = acknowledge_email
                 if catalog == 'UCAC-3':
                     catalog = "UCAC3" #mpc has changed their requirement
+                elif catalog == 'GAIA DR3':
+                    catalog = "GAIA3" #mpc has changed their requirement
+                elif catalog == 'GAIA DR2':
+                    catalog = "GAIA2" #mpc has changed their requirement
                 self.header['catalog'] = catalog
 
                 #match information from the photometry File:
