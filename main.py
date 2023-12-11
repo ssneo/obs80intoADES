@@ -9,6 +9,11 @@ import glob
 import xml.etree.ElementTree as XMLElement
 import xml.dom.minidom as minidom
 
+from src.calculate_JD import calculateJD
+from src.calculateRA_degs import calculateRa_degs
+from src.calculateDec_degs import calculateDec_degs
+from src.calculate_obs_time import calculateObsTime
+from src.determine_Permid_Provid_Values import determinePermidProvidValues
 
 class autoOperations:
 
@@ -226,7 +231,7 @@ class autoOperations:
                     self.dic[i]['button'].grid(row=row_value, column=0, columnspan=2, sticky=W+E)
                     self.dic[i]['variable'].set(1)
 
-                    permid, provid, trksub = self.determinePermidProvidValues( self.obs[i]['name'] )
+                    permid, provid, trksub = determinePermidProvidValues( self.obs[i]['name'] )
                     #print (permid, provid)
 
                     self.dic[i]['entry_permid'] = Entry(  width=15 )
@@ -406,14 +411,16 @@ class autoOperations:
                 if catalog == 'UCAC-3':
                     catalog = "UCAC3" #mpc has changed their requirement
                 elif catalog == 'Gaia DR3':
-                    catalog = "GAIA3" #mpc has changed their requirement
+                    catalog = "Gaia3" #mpc has changed their requirement
                 elif catalog == 'Gaia DR2':
-                    catalog = "GAIA2" #mpc has changed their requirement
+                    catalog = "Gaia2" #mpc has changed their requirement
+                elif catalog == 'Gaia DR1':
+                    catalog = "Gaia1" #mpc has changed their requirement
                 self.header['catalog'] = catalog
 
                 #match information from the photometry File:
 
-                jd = self.calculteJD( count )
+                jd = calculateJD( self.obs[count] )
                 #print (jd)
                 snr_column_number = None
                 mag_column_number = None
@@ -661,11 +668,14 @@ class autoOperations:
         #real submission
         command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
 
+        print ('len(command)', len(command))
         print (command)
+        print ('len(command)', len(command))
 
         res = os.system( command )
 
         print ('res', res)
+        print ('len(res)', len(res))
 
         if res == 0:
             print ('MPC Accepted Submission')
@@ -700,14 +710,14 @@ class autoOperations:
         if self.config["FUNDING_AGENCY_FOR_ADES"] != "None":
             head_dict["fundingSource"]  = self.config["FUNDING_AGENCY_FOR_ADES"]
 
-        head_dict["observatoryName"]            = self.config["OBSERVATORY_NAME_FOR_ADES"]
+        head_dict["observatoryName"]    = self.config["OBSERVATORY_NAME_FOR_ADES"]
         head_dict["submitter"]          = self.config["NAME_FOR_THE_ADES_SUBMITTER_FIELD"]
         head_dict["observers"]          = self.config["OBSERVERS_FOR_ADES"]
         head_dict["measurers"]          = self.config["MEASURERS_FOR_ADES"]
         head_dict["telescope_design"]   = self.config["TELESCOPE_DESIGN_FOR_ADES"]
         head_dict["telescope_aperture"] = self.config["TELESCOPE_APERTURE_FOR_ADES"]
         head_dict["telescope_detector"] = self.config["TELESCOPE_DETECTOR_FOR_ADES"]
-        head_dict["fRatio"] = self.config["TELESCOPE_FOCAL_RATIO_FOR_ADES"]
+        head_dict["fRatio"]             = self.config["TELESCOPE_FOCAL_RATIO_FOR_ADES"]
         
 
         #build ades_data dictionary
@@ -717,9 +727,12 @@ class autoOperations:
 
             if self.dic[i]['variable'].get() == 1:
 
-                obsTime = self.calculteObsTime( i )
-                ra_degs = self.calculteRa_degs( i )
-                dec_degs = self.calculteDec_degs( i )
+                obsTime = calculateObsTime( self.obs[i] )
+                
+                ra_degs = calculateRa_degs( self.obs[i] )
+                
+                dec_degs = calculateDec_degs( self.obs[i] )
+                
 
                 #print ('obsTime', obsTime)
 

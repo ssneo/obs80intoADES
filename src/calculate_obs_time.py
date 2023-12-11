@@ -1,7 +1,7 @@
 
 
 
-def calculteObsTime( time_value ):
+def calculateObsTime( time_value ):
 
     #obsTime format is yyyy-mm-ddThh:mm:ss.sssZ
     date = "%s-%s-%s"%(time_value['year'], time_value['month'], time_value['day'] )

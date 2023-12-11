@@ -25,4 +25,18 @@ def test_permid_provid_values_0():
     else:
         assert 1 == 0
 
+def test_permid_provid_values_1():
+
+    #test basic file name
+    name = '     K23X00A'
+
+    permid, provid, trksub = determinePermidProvidValues( name )
+
+    if permid == None and provid == '2023 XA' and trksub == 'K23X00A':
+
+        assert 1 == 1
+    else:
+        assert 1 == 0
+
+
     

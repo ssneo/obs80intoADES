@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<trkSub>CA07P22</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-10T01:45:50.40Z</obsTime>
+				<ra>19.968083</ra>
+				<dec>-16.787556</dec>
+				<rmsRA>0.51</rmsRA>
+				<rmsDec>0.51</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.0 </mag>
+				<rmsMag>0.12</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>CA07P22</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-10T01:51:08.35Z</obsTime>
+				<ra>19.977375</ra>
+				<dec>-16.781083</dec>
+				<rmsRA>0.4</rmsRA>
+				<rmsDec>0.4</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.9 </mag>
+				<rmsMag>0.09</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>CA07P22</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-10T01:56:34.94Z</obsTime>
+				<ra>19.987042</ra>
+				<dec>-16.774667</dec>
+				<rmsRA>0.61</rmsRA>
+				<rmsDec>0.61</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.63</mag>
+				<rmsMag>0.19</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>CA07P22</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-10T02:01:53.76Z</obsTime>
+				<ra>19.995917</ra>
+				<dec>-16.768056</dec>
+				<rmsRA>0.41</rmsRA>
+				<rmsDec>0.41</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.1</mag>
+				<rmsMag>0.17</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

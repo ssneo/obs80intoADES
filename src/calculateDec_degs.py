@@ -1,5 +1,5 @@
 
-def calculteDec_degs( obs ):
+def calculateDec_degs( obs ):
 
     dec_degrees = int( obs["dec_degrees"] )
     dec_minutes = int( obs["dec_minutes"] )

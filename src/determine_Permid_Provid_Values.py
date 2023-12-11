@@ -91,7 +91,10 @@ def determinePermidProvidValues( name ):
         #print ('second_letter', second_letter)
 
         if first_number == "0": #don't include the first zero
-            unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{second_number}"
+            if second_number != "0":
+                unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{second_number}"
+            else:
+                unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}"
         else:
             unpacked_provid = f"{first_half_of_year}{second_half_of_year} {first_letter}{second_letter}{first_number}{second_number}"
         #print ('unpacked_provid', unpacked_provid)
