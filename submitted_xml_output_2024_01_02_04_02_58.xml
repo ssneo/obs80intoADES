@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<trkSub>P21Q7BN</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-02T02:45:39.46Z</obsTime>
+				<ra>61.672125</ra>
+				<dec>30.166722</dec>
+				<rmsRA>0.2</rmsRA>
+				<rmsDec>0.2</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.9 </mag>
+				<rmsMag>0.06</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>P21Q7BN</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-02T02:52:41.9Z</obsTime>
+				<ra>61.706958</ra>
+				<dec>30.187361</dec>
+				<rmsRA>0.25</rmsRA>
+				<rmsDec>0.25</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.0 </mag>
+				<rmsMag>0.08</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>P21Q7BN</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-02T02:59:28.90Z</obsTime>
+				<ra>61.740625</ra>
+				<dec>30.207278</dec>
+				<rmsRA>0.18</rmsRA>
+				<rmsDec>0.18</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.1 </mag>
+				<rmsMag>0.06</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

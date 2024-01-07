@@ -675,7 +675,7 @@ class autoOperations:
         res = os.system( command )
 
         print ('res', res)
-        print ('len(res)', len(res))
+        #print ('len(res)', len(res))
 
         if res == 0:
             print ('MPC Accepted Submission')

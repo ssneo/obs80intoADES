@@ -7,7 +7,7 @@ import xml.dom.minidom as minidom
 
 def generate_xml(header_data, obs_data):
     """
-    Takes all the ADES 2017 data and puts it into XML tree.
+    Takes all the ADES 2022 data and puts it into XML tree.
     Call this program the first time you're creating the
     XML submission, this call includes header information.
     Args:

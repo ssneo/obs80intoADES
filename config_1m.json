@@ -9,7 +9,7 @@
     "TELESCOPE_DESIGN_FOR_ADES"             : "Ritchey-Chretien",
     "TELESCOPE_APERTURE_FOR_ADES"           : "1.0m f/10",
     "TELESCOPE_DETECTOR_FOR_ADES"           : "CCD",
-    "OBSERVERS_FOR_ADES"                    : "T. Linder, R. Holmes, L. Horn",
-    "MEASURERS_FOR_ADES"                    : "T. Linder, R. Holmes, L. Horn"
+    "OBSERVERS_FOR_ADES"                    : "T. Linder, R. Holmes",
+    "MEASURERS_FOR_ADES"                    : "T. Linder, R. Holmes"
 
 }

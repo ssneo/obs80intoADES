@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes, L. Horn</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<provID>2012 BV26</provID>
+				<trkSub>K12B26V</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-31T04:09:46.94Z</obsTime>
+				<ra>99.863125</ra>
+				<dec>-14.399139</dec>
+				<rmsRA>0.34</rmsRA>
+				<rmsDec>0.34</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.4 </mag>
+				<rmsMag>0.12</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2012 BV26</provID>
+				<trkSub>K12B26V</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-31T04:16:07.97Z</obsTime>
+				<ra>99.860083</ra>
+				<dec>-14.396028</dec>
+				<rmsRA>0.49</rmsRA>
+				<rmsDec>0.49</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.6 </mag>
+				<rmsMag>0.18</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2012 BV26</provID>
+				<trkSub>K12B26V</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2023-12-31T04:22:22.8Z</obsTime>
+				<ra>99.857</ra>
+				<dec>-14.392944</dec>
+				<rmsRA>0.51</rmsRA>
+				<rmsDec>0.51</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.3 </mag>
+				<rmsMag>0.17</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

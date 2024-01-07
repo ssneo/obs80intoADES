@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<provID>2023 YJ1</provID>
+				<trkSub>K23Y01J</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T02:02:50.78Z</obsTime>
+				<ra>88.545625</ra>
+				<dec>-31.275444</dec>
+				<rmsRA>0.12</rmsRA>
+				<rmsDec>0.12</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.3 </mag>
+				<rmsMag>0.05</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2023 YJ1</provID>
+				<trkSub>K23Y01J</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T02:09:50.69Z</obsTime>
+				<ra>88.544625</ra>
+				<dec>-31.277389</dec>
+				<rmsRA>0.1</rmsRA>
+				<rmsDec>0.1</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.0 </mag>
+				<rmsMag>0.04</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2023 YJ1</provID>
+				<trkSub>K23Y01J</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T02:16:36.77Z</obsTime>
+				<ra>88.543583</ra>
+				<dec>-31.279444</dec>
+				<rmsRA>0.12</rmsRA>
+				<rmsDec>0.12</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.9 </mag>
+				<rmsMag>0.05</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

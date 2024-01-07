@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<provID>2023 XN4</provID>
+				<trkSub>K23X04N</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T03:08:26.30Z</obsTime>
+				<ra>103.698292</ra>
+				<dec>-34.470306</dec>
+				<rmsRA>0.28</rmsRA>
+				<rmsDec>0.28</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.1 </mag>
+				<rmsMag>0.03</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2023 XN4</provID>
+				<trkSub>K23X04N</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T03:14:04.13Z</obsTime>
+				<ra>103.701792</ra>
+				<dec>-34.477861</dec>
+				<rmsRA>0.35</rmsRA>
+				<rmsDec>0.35</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.6 </mag>
+				<rmsMag>0.14</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2023 XN4</provID>
+				<trkSub>K23X04N</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T03:19:48.86Z</obsTime>
+				<ra>103.705417</ra>
+				<dec>-34.485556</dec>
+				<rmsRA>0.33</rmsRA>
+				<rmsDec>0.33</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.4 </mag>
+				<rmsMag>0.13</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<provID>2023 XN4</provID>
+				<trkSub>K23X04N</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T03:30:49.82Z</obsTime>
+				<ra>103.712167</ra>
+				<dec>-34.500417</dec>
+				<rmsRA>0.32</rmsRA>
+				<rmsDec>0.32</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>20.1 </mag>
+				<rmsMag>0.12</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>

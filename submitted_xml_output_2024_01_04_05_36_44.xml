@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<ades version="2022">
+	<obsBlock>
+		<obsContext>
+			<observatory>
+				<mpcCode>807</mpcCode>
+				<name>Cerro Tololo Inter-American Observatory</name>
+			</observatory>
+			<submitter>
+				<name>R. Holmes</name>
+			</submitter>
+			<observers>
+				<name>T. Linder, R. Holmes</name>
+			</observers>
+			<measurers>
+				<name>T. Linder, R. Holmes</name>
+			</measurers>
+			<telescope>
+				<design>Ritchey-Chretien</design>
+				<aperture>0.61</aperture>
+				<detector>CCD</detector>
+				<fRatio>11</fRatio>
+			</telescope>
+			<fundingSource>NASA</fundingSource>
+		</obsContext>
+		<obsData>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:11:59.42Z</obsTime>
+				<ra>105.950458</ra>
+				<dec>-65.646028</dec>
+				<rmsRA>0.21</rmsRA>
+				<rmsDec>0.21</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>18.8 </mag>
+				<rmsMag>0.06</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:14:16.80Z</obsTime>
+				<ra>105.949958</ra>
+				<dec>-65.645944</dec>
+				<rmsRA>0.24</rmsRA>
+				<rmsDec>0.24</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>18.7 </mag>
+				<rmsMag>0.05</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:16:35.4Z</obsTime>
+				<ra>105.949292</ra>
+				<dec>-65.645722</dec>
+				<rmsRA>0.2</rmsRA>
+				<rmsDec>0.2</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>18.7 </mag>
+				<rmsMag>0.05</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:18:52.42Z</obsTime>
+				<ra>105.948667</ra>
+				<dec>-65.64575</dec>
+				<rmsRA>0.23</rmsRA>
+				<rmsDec>0.23</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.0 </mag>
+				<rmsMag>0.07</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:21:10.66Z</obsTime>
+				<ra>105.948208</ra>
+				<dec>-65.645583</dec>
+				<rmsRA>0.31</rmsRA>
+				<rmsDec>0.31</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.2 </mag>
+				<rmsMag>0.09</rmsMag>
+				<band>G</band>
+			</optical>
+			<optical>
+				<trkSub>A111kXD</trkSub>
+				<mode>CCD</mode>
+				<stn>807</stn>
+				<obsTime>2024-01-04T05:23:28.3Z</obsTime>
+				<ra>105.947417</ra>
+				<dec>-65.645417</dec>
+				<rmsRA>0.32</rmsRA>
+				<rmsDec>0.32</rmsDec>
+				<astCat>Gaia2</astCat>
+				<mag>19.6 </mag>
+				<rmsMag>0.11</rmsMag>
+				<band>G</band>
+			</optical>
+		</obsData>
+	</obsBlock>
+</ades>
