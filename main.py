@@ -3,7 +3,8 @@ from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 import os
 import json
-from create_ades import generate_xml, update_xml
+from create_xml import generate_xml, update_xml
+from create_psv import generate_psv
 from datetime import datetime
 import glob
 import xml.etree.ElementTree as XMLElement
@@ -94,6 +95,14 @@ class autoOperations:
         Label( self.mp, text='Tel Detector').grid(row=5, column=8, sticky=E)
         self.tel_detector_for_ades = Label( self.mp, text=self.config["TELESCOPE_DETECTOR_FOR_ADES"] )
         self.tel_detector_for_ades.grid( row=5, column = 10, columnspan=4, sticky = W)
+
+        Label(self.mp, text='XML or PSV').grid(row=5, column=12, columnspan=2, sticky=E)
+        xml_psv =['XML', 'PSV' ]
+        self.xml_psv_selection = StringVar()
+        self.xml_psv_selection.set( xml_psv[1] )
+        xml_psv_menu = OptionMenu(self.mp, self.xml_psv_selection, *xml_psv )
+        xml_psv_menu.grid( row = 5, column = 14, columnspan=4, sticky=W )
+
 
         
 
@@ -628,45 +637,39 @@ class autoOperations:
 
         self.update_xml_file_list()
 
-    def build_ades(self):
-
-        self.xml_filename = self.build_xml()
-
-        
-        self.update_xml_file_list()
-
-        self.submit_button.config(bg='Grey')
-        
-
-        #self.xml_val.
 
     def submit_obs( self ):
-
-        xml_filename = self.build_xml()
-        self.update_xml_file_list()
-
-        #xml_filename = self.xml_val.get()
-
-        obs_type = self.obs_types_val.get()
-
-
 
         ack_line="ack=permid_%s_provid_%s_trkSub_%s"%(self.permid, self.provid, self.trkSub)
         #email_line = "ack=tlinder34@gmail.com,lehorn93@gmail.com,star@astro-research.org"
         email_line = "ac2=%s"%(self.config["LIST_OF_EMAILS_FOR_AC2_LINE"])
         obs_type_field = "obj_type=%s"%(obs_type)
 
-        #print ('ack_line', ack_line)
-        #print ('email_line', email_line)
-        
+        if self.xml_psv_selection.get() == 'XML':
+            xml_filename = self.build_xml()
+            self.update_xml_file_list()
 
-        #command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
-        
-        #testing
-        command = 'curl https://minorplanetcenter.net/submit_xml_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+            #xml_filename = self.xml_val.get()
 
-        #real submission
-        #command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+            obs_type = self.obs_types_val.get()
+
+            #print ('ack_line', ack_line)
+            #print ('email_line', email_line)
+            
+
+            #command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
+            
+            #testing
+            command = 'curl https://minorplanetcenter.net/submit_xml_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+
+            #real submission
+            #command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+
+        elif self.xml_psv_selection.get() == 'PSV':
+            psv_filename = self.build_psv()
+
+        else:
+            print ('Error, XML or PSV not selected')
 
         print ('len(command)', len(command))
         print (command)
@@ -695,10 +698,16 @@ class autoOperations:
             print ('MPC Rejected the Submission with curl error of: %s'%(res))
             self.submit_button.config(bg='Red')
 
-    def build_xml( self ):
+    def build_ades( self ):
 
         current_date_time = datetime.utcnow()
-        xml_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.xml"
+
+        if self.xml_psv_selection.get() == 'XML':
+            ades_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.xml"
+        elif self.xml_psv_selection.get() == 'PSV':
+            ades_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.psv"
+        else:
+            print ('XML or PSV not selected')
 
         #xml_filename = "Catalog.xml"
 
@@ -789,18 +798,24 @@ class autoOperations:
 
 
 
-        # generate the header and the first observation.
-        XMLElement, ades, obsData = generate_xml(head_dict, data_dic[0] )
+        if self.xml_psv_selection.get() == 'XML':
+            # generate the header and the first observation.
+            XMLElement, ades, obsData = generate_xml(head_dict, data_dic[0] )
+        
+            # update the xml
+            for i in range( 1, len( data_dic ) ): #start at one because data_dic[0] was used to create the orginal file
+                XMLElement, ades, obsData = update_xml(XMLElement, ades, obsData, data_dic[i] )
 
-        # update the xml
-        for i in range( 1, len( data_dic ) ): #start at one because data_dic[0] was used to create the orginal file
-            XMLElement, ades, obsData = update_xml(XMLElement, ades, obsData, data_dic[i] )
+            # write the ADES xml to file
+            tree = XMLElement.ElementTree(ades)
+            xml_string = minidom.parseString(XMLElement.tostring(ades)).toprettyxml()
+            with open(ades_filename, "w", encoding="UTF-8") as files:
+                files.write(xml_string)
 
-        # write the ADES xml to file
-        tree = XMLElement.ElementTree(ades)
-        xml_string = minidom.parseString(XMLElement.tostring(ades)).toprettyxml()
-        with open(xml_filename, "w", encoding="UTF-8") as files:
-            files.write(xml_string)
+        elif self.xml_psv_selection.get() == 'PSV':
+            #ades, obsData = generate_psv( head_dict, data_dic)
+            generate_psv( head_dict, data_dic, ades_filename)
+
 
 
 
@@ -808,7 +823,9 @@ class autoOperations:
 
         #    for i in range(0, len( self.log ) ):
 
-        return xml_filename
+        return ades_filename
+    
+
 
 
     
