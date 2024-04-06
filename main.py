@@ -637,21 +637,24 @@ class autoOperations:
 
         self.update_xml_file_list()
 
-
     def submit_obs( self ):
+
+        ades_filename = self.build_ades()
 
         ack_line="ack=permid_%s_provid_%s_trkSub_%s"%(self.permid, self.provid, self.trkSub)
         #email_line = "ack=tlinder34@gmail.com,lehorn93@gmail.com,star@astro-research.org"
         email_line = "ac2=%s"%(self.config["LIST_OF_EMAILS_FOR_AC2_LINE"])
+
+        obs_type = self.obs_types_val.get()
         obs_type_field = "obj_type=%s"%(obs_type)
 
         if self.xml_psv_selection.get() == 'XML':
-            xml_filename = self.build_xml()
+            
             self.update_xml_file_list()
 
             #xml_filename = self.xml_val.get()
 
-            obs_type = self.obs_types_val.get()
+            
 
             #print ('ack_line', ack_line)
             #print ('email_line', email_line)
@@ -660,10 +663,10 @@ class autoOperations:
             #command = 'curl https://minorplanetcenter.net/submit_xml -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<%s" '%(fileName)
             
             #testing
-            command = 'curl https://minorplanetcenter.net/submit_xml_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+            #command = 'curl -i https://minorplanetcenter.net/submit_xml_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, ades_filename)
 
             #real submission
-            #command = 'curl https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, xml_filename)
+            command = 'curl -i https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, ades_filename)
 
         elif self.xml_psv_selection.get() == 'PSV':
             psv_filename = self.build_psv()
@@ -677,7 +680,10 @@ class autoOperations:
 
         res = os.system( command )
 
-        print ('res', res)
+        #print ('res', res)
+        #for key in res:
+        #    print ('key', key)
+        #print ('res1', res.read() )
         #print ('len(res)', len(res))
 
         if res == 0:
@@ -740,8 +746,14 @@ class autoOperations:
                 
                 ra_degs = calculateRa_degs( self.obs[i] )
                 
-                dec_degs = calculateDec_degs( self.obs[i] )
-                
+                #print ('self.obs[i]')
+                #for key in self.obs[i]:
+                #    print ('key', key, self.obs[i][key])
+                #stop
+                if self.obs[i]['dec_degrees'][0] == '+':
+                    dec_degs = calculateDec_degs( self.obs[i], 'positive' )
+                else:
+                    dec_degs = calculateDec_degs( self.obs[i], 'negative' )
 
                 #print ('obsTime', obsTime)
 

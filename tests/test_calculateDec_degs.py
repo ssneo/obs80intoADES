@@ -24,7 +24,7 @@ def test_calculateDec_degs_0():
     obs["dec_minutes"] = dec_minutes
     obs["dec_seconds"] = dec_seconds
 
-    dec_deg = calculateDec_degs( obs )
+    dec_deg = calculateDec_degs( obs, 'positive' )
 
     print ('dec_deg', dec_deg)
 
@@ -47,7 +47,7 @@ def test_calculateDec_degs_1():
     obs["dec_minutes"] = dec_minutes
     obs["dec_seconds"] = dec_seconds
 
-    dec_deg = calculateDec_degs( obs )
+    dec_deg = calculateDec_degs( obs, 'positive' )
 
     print ('')
     print ('dec_deg', dec_deg)
@@ -71,7 +71,7 @@ def test_calculateDec_degs_2():
     obs["dec_minutes"] = dec_minutes
     obs["dec_seconds"] = dec_seconds
 
-    dec_deg = calculateDec_degs( obs )
+    dec_deg = calculateDec_degs( obs, 'positive' )
 
     print ('')
     print ('dec_deg', dec_deg)
@@ -79,6 +79,30 @@ def test_calculateDec_degs_2():
 
 
     if dec_deg == 0.125167:
+        assert True
+    else:
+        assert False
+
+def test_calculateDec_degs_2():
+
+    #test basic value
+    
+    dec_degrees = -0
+    dec_minutes = 7
+    dec_seconds = 30.6
+    obs = {}
+    obs["dec_degrees"] = dec_degrees
+    obs["dec_minutes"] = dec_minutes
+    obs["dec_seconds"] = dec_seconds
+
+    dec_deg = calculateDec_degs( obs, 'negative' )
+
+    print ('')
+    print ('dec_deg', dec_deg)
+    print ('hello good bye')
+
+
+    if dec_deg == -0.125167:
         assert True
     else:
         assert False

@@ -38,5 +38,20 @@ def test_permid_provid_values_1():
     else:
         assert 1 == 0
 
+def test_permid_provid_values_2():
+
+    #test basic file name
+    name = '~0011       '
+
+    permid, provid, trksub = determinePermidProvidValues( name )
+
+    #print (permid, provid, trksub)
+
+    if permid == 620063 and provid == None and trksub == None:
+
+        assert 1 == 1
+    else:
+        assert 1 == 0
+
 
     

@@ -9,7 +9,7 @@
     "OBSERVATORY_NAME_FOR_ADES"             : "Cerro Tololo Inter-American Observatory",
     "TELESCOPE_DESIGN_FOR_ADES"             : "Ritchey-Chretien",
     "TELESCOPE_APERTURE_FOR_ADES"           : "0.61",
-    "TELESCOPE_FOCAL_RATIO_FOR_ADES"        : "11",
+    "TELESCOPE_FOCAL_RATIO_FOR_ADES"        : "6.8",
     "TELESCOPE_DETECTOR_FOR_ADES"           : "CCD",
     "LOCATION_OF_ASTROMETRICA_LOG_FILES"    : "C:\\Astrometrica\\!EIU Astrometrica (outputfile)",
     "LOCATION_TO_SAVE_XML_FILES"            : "C:\\Astrometrica\\obs80intoADES"

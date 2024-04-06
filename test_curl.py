@@ -4,22 +4,30 @@ import requests
 import xml.etree.ElementTree as ET
 
 
+#file_loc = "prep_xml_output_2024_02_18_22_39_26.xml"
+#url = "https://minorplanetcenter.net/submit_xml_test"
+
+file_loc = "prep_xml_output_2024_02_19_02_46_25.xml"
+url = "https://minorplanetcenter.net/submit_xml"
 
 
-command = 'curl https://minorplanetcenter.net/submit_xml_test -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<xml_output_2023_11_08_19_06_42.xml" '
+#command = 'curl https://minorplanetcenter.net/submit_xml_test -F "ack=curl_test" -F "ac2=tlinder34@gmail.com" -F "source=<prep_xml_output_2024_02_18_22_39_26.xml" '
 
-#xml_filename = "xml_output_2023_11_14_12_24_01.xml"
-#tree = ET.parse( xml_filename )
-#root = tree.getroot()
-#for child in root:
-#    print( root.tag, root.attrib)
-#print (root)
-#stop
+#res = os.system( command )
+#print ('res', res)
 
-#req = requests.post( "https://minorplanetcenter.net/submit_xml_test", data=root )
+files = {'source<': open(file_loc, 'r')}
+values = {'ack': 'request_test', 'ac2': 'tlinder34@gmail.com'}
 
-#print (req)
 
-res = os.system( command )
+req = requests.post( url, files=files, data=values )
 
-print ('res', res)
+for key in req.headers:
+    print (key, req.headers[key])
+#print (req.headers)
+print ('')
+print (req.status_code)
+#print (req.content)
+#print (req.text)
+
+

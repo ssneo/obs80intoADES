@@ -1,0 +1,18 @@
+# version=2022
+# observatory
+! mpcCode 807
+! name Cerro Tololo Inter-American Observatory
+# submitter
+! name T. Linder
+# telescope
+! aperture 0.61
+! design Ritchey-Chretien
+! detector CCD
+# observers
+! name T. Linder
+# measurers
+! name T. Linder
+trkSub  |mode|stn |obsTime                 |ra         |dec        |rmsRA  |rmsDec |astCat  |mag    |band
+P21SSQk |CCD |807 |2024-03-31T04:38:46.18Z |179.9265830|+6.1936390|0.44   |0.44   |Gaia2   |21.2   |G   
+P21SSQk |CCD |807 |2024-03-31T04:48:22.46Z |179.9332080|+6.1906390|0.46   |0.46   |Gaia2   |21.5   |G   
+P21SSQk |CCD |807 |2024-03-31T04:57:46.66Z |179.9398750|+6.1876390|0.32   |0.32   |Gaia2   |21.3   |G   

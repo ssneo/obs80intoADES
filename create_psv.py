@@ -4,10 +4,10 @@ def format_data( data):
     data_line = ""
 
     if 'permID' in data:
-        data_line += f"{data['permid']:<15}|"
+        data_line += f"{data['permID']:<15}|"
 
     if 'provID' in data:
-        data_line += f"{data['provid']:<15}|"
+        data_line += f"{data['provID']:<15}|"
 
     if 'trkSub' in data:
         data_line += f"{data['trkSub']:<8}|"
@@ -22,10 +22,18 @@ def format_data( data):
         data_line += f"{data['obsTime']:<24}|"
 
     if 'ra' in data:
-        data_line += f"{data['ra']:<13}|"
+        ra = float ( data['ra'])
+        
+        #print ('test', f"{float(data['ra']):.06d}")
+        data_line += f"{ra:.7f}|"
 
     if 'dec' in data:
-        data_line += f"{data['dec']:<13}|"
+        dec = float( data['dec'] )
+        if dec > 0:
+
+            data_line += f"+{dec:.7f}|" #add the plus sign
+        else:
+            data_line += f"{dec:.7f}|" #add the plus sign
 
     if 'rmsRA' in data:
         data_line += f"{data['rmsRA']:<7}|"
@@ -56,11 +64,11 @@ def format_header( data_dic ):
 
     header_line = ""
 
-    if 'permid' in data_dic[0]:
-        header_line += f"{'permid':<15}|"
+    if 'permID' in data_dic[0]:
+        header_line += f"{'permID':<15}|"
 
-    if 'provid' in data_dic[0]:
-        header_line += f"{'provid':<15}|"
+    if 'provID' in data_dic[0]:
+        header_line += f"{'provID':<15}|"
 
     if 'trkSub' in data_dic[0]:
         header_line += f"{'trkSub':<8}|"
@@ -75,10 +83,10 @@ def format_header( data_dic ):
         header_line += f"{'obsTime':<24}|"
 
     if 'ra' in data_dic[0]:
-        header_line += f"{'ra':<13}|"
+        header_line += f"{'ra':<11}|"
 
     if 'dec' in data_dic[0]:
-        header_line += f"{'dec':<13}|"
+        header_line += f"{'dec':<11}|"
 
     if 'rmsRA' in data_dic[0]:
         header_line += f"{'rmsRA':<7}|"

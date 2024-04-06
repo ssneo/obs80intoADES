@@ -4,7 +4,7 @@
 def determinePermidProvidValues( name ):
     #print ('name', name)
 
-    characters = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "~" ]
+    characters = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "~" ]
 
     we_have_packed_number   = False
     we_have_packed_provid   = False
@@ -16,18 +16,53 @@ def determinePermidProvidValues( name ):
         packed_number = name[0:5]
 
         character_value = None
+        #need to determine what is the first number. If it is ~, this a different handling of the number must occur
         for j in range( 0, len( characters ) ):
             if name[0] == characters[j]:
-                character_value = j
+                character_value = j #this is the index position of the list characters
                 break
 
         #print ('character_value', character_value)
-        if character_value != None:
-            character2Number = j + 10
-            unpacked_number = str( character2Number) + name[1:5]
+        if character_value == None: #this is a double check
+            print (f'error, unable to convert name: {name}')
+
         else:
-            unpacked_number = packed_number
-            #print ("Correct Character_value was not found: name = %s"%(name))
+            if characters[ character_value ] != "~": #if not tilda, then the old methods apply where the last four digits are just the number
+                unpacked_number = str( character_value) + name[1:5]
+            else: #need to handle the tilda math where get of the remaining four values will be from 0-10 then A-Z then a-z
+                second_digit = name[1]
+                second_value = None
+                thrid_digit = name[2]
+                thrid_value = None
+                fourth_digit = name[3]
+                fourth_value = None
+                fifth_digit = name[4]
+                fifth_value = None
+                for j in range( 0, len( characters ) ):
+                    if second_digit == characters[j]:
+                        second_value = j
+                        break
+                for j in range( 0, len( characters ) ):
+                    if thrid_digit == characters[j]:
+                        thrid_value = j
+                        break
+
+                for j in range( 0, len( characters ) ):
+                    if fourth_digit == characters[j]:
+                        fourth_value = j
+                        break
+
+                for j in range( 0, len( characters ) ):
+                    if fifth_digit == characters[j]:
+                        fifth_value = j
+                        break
+
+                #now the math.
+                #based tilda = 620000 + second digit + thrid digit + fourth digit + fifth digit
+                unpacked_number = 620000 + (second_value * 238328) + (thrid_value * 3844 ) + ( fourth_value * 62 ) + fifth_value
+
+
+            
 
         
 
@@ -79,7 +114,7 @@ def determinePermidProvidValues( name ):
                     character_value = j
                     break
             if character_value != None:
-                character2Number = j + 10
+                character2Number = j 
                 first_number = character2Number
 
         #print ('first_number', first_number, type(first_number))
@@ -110,10 +145,10 @@ def determinePermidProvidValues( name ):
 
 
     #print (we_have_packed_number, we_have_packed_provid, we_have_neocp)
-    if we_have_packed_number == True:
+    if we_have_packed_number == True: #with numbers larger than 620,000 the MPC won't accept the trkSub that has a tilda
         permid  = unpacked_number
         provid  = None
-        trksub   = name.replace(" ", "")
+        trksub   = None
 
     elif we_have_packed_provid == True:
         permid  = None
