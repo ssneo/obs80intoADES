@@ -57,8 +57,9 @@ def generate_xml(header_data, obs_data):
     aperture.text = header_data["telescope_aperture"]
     detector = XMLElement.SubElement(telescope, "detector")
     detector.text = header_data["telescope_detector"]
-    detector = XMLElement.SubElement(telescope, "fRatio")
-    detector.text = header_data["fRatio"]
+    if "fRatio" in header_data:
+        fRatio = XMLElement.SubElement(telescope, "fRatio")
+        fRatio.text = header_data["fRatio"]
 
     # data obsContext/fundingSource
     fundingSource = XMLElement.SubElement(obsContext, "fundingSource")

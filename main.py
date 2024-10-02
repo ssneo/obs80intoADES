@@ -574,8 +574,21 @@ class autoOperations:
                         #if float( self.obs[count]['snr'] ) > float( self.obs[count]['phot_snr'] ): #use the large snr value, if the log file is larger
                         #    usesnr = float( self.obs[count]['snr'] )
 
+                        
+                        fwhm                                       = float( self.obs[count]['fwhm'] )
+                        
+
+                        if usesnr <= 0.0:
+                            usesnr = 1.0
+                        if fwhm <= 0.0:
+                            fwhm = 1.0
+                        self.obs[count]['fwhm']                    = fwhm
                         self.obs[count]['usesnr']                  = usesnr
-                        self.obs[count]['pos_unc']                  = round( ( float( self.obs[count]['fwhm'] ) / usesnr ) , 2)
+
+                        #print ("float( self.obs[count]['fwhm']", float( self.obs[count]['fwhm'] ) )
+                        #print ('usesnr', usesnr)
+                        
+                        self.obs[count]['pos_unc']                 = round( ( fwhm / usesnr ) , 2)
                         break #this will break the k loop
                         #stop
                     
@@ -732,7 +745,8 @@ class autoOperations:
         head_dict["telescope_design"]   = self.config["TELESCOPE_DESIGN_FOR_ADES"]
         head_dict["telescope_aperture"] = self.config["TELESCOPE_APERTURE_FOR_ADES"]
         head_dict["telescope_detector"] = self.config["TELESCOPE_DETECTOR_FOR_ADES"]
-        head_dict["fRatio"]             = self.config["TELESCOPE_FOCAL_RATIO_FOR_ADES"]
+        if "TELESCOPE_FOCAL_RATIO_FOR_ADES" in self.config:
+            head_dict["fRatio"]             = self.config["TELESCOPE_FOCAL_RATIO_FOR_ADES"]
         
 
         #build ades_data dictionary

@@ -1,0 +1,16 @@
+{
+    "MPC_CODE"                              : "W84",
+    "NAME_FOR_THE_ADES_SUBMITTER_FIELD"     : "T. Linder",
+    "OBSERVERS_FOR_ADES"                    : "T. Linder",
+    "MEASURERS_FOR_ADES"                    : "T. Linder",
+    "LIST_OF_EMAILS_FOR_AC2_LINE"           : "ssneo@ssneo.org",
+    "IF_NO_FWHM_IS_CALCULTED_USE_VALUE"     : "5.0",
+    "FUNDING_AGENCY_FOR_ADES"               : "NASA",
+    "OBSERVATORY_NAME_FOR_ADES"             : "Cerro Tololo Inter-American Observatory",
+    "TELESCOPE_DESIGN_FOR_ADES"             : "reflector",
+    "TELESCOPE_APERTURE_FOR_ADES"           : "4.0",
+    "TELESCOPE_DETECTOR_FOR_ADES"           : "CCD",
+    "LOCATION_OF_ASTROMETRICA_LOG_FILES"    : "C:\\Astrometrica\\!EIU Astrometrica (outputfile)",
+    "LOCATION_TO_SAVE_XML_FILES"            : "C:\\Astrometrica\\obs80intoADES"
+
+}
