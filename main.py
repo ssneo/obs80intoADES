@@ -5,7 +5,7 @@ import os
 import json
 from create_xml import generate_xml, update_xml
 from create_psv import generate_psv
-from datetime import datetime
+from datetime import datetime, timezone
 import glob
 import xml.etree.ElementTree as XMLElement
 import xml.dom.minidom as minidom
@@ -15,6 +15,8 @@ from src.calculateRA_degs import calculateRa_degs
 from src.calculateDec_degs import calculateDec_degs
 from src.calculate_obs_time import calculateObsTime
 from src.determine_Permid_Provid_Values import determinePermidProvidValues
+
+
 
 class autoOperations:
 
@@ -31,16 +33,16 @@ class autoOperations:
         #self.text_area = ScrolledText( self.mp, wrap="word", width=100, height=10, font= ("Times New Roman", 10) )
         #self.text_area.grid( row=50, column=0, columnspan=21 ) 
 
-        cwd = os.getcwd()
+        self.cwd = os.getcwd()
         #print ('cwd', cwd)
-        config_files = glob.glob( cwd + "\\config*.json")
+        config_files = glob.glob( self.cwd + "\\config_files\\config*.json")
         self.config_val = StringVar()
         self.config_val.set( config_files[0] )
         self.previous_config_file = self.config_val.get()
         config_files_menu = OptionMenu(self.mp, self.config_val, *config_files)
         config_files_menu.grid( row = 1, column = 0, columnspan=10, sticky=W )
 
-        self.xml_files = glob.glob( cwd + "\\prep_xml*.xml")
+        self.xml_files = glob.glob( self.cwd + "\\built_files\\prep_xml*.xml")
         for i in self.xml_files: #errors occur when there is already a prep_xml file that is loaded on start-UP. to fix this, going to delete all prep_xml files on startup
             os.remove(i)
         self.xml_files = []    
@@ -52,7 +54,7 @@ class autoOperations:
             self.xml_val.set( self.xml_files[ len( self.xml_files ) - 1 ] )
 
         self.xml_files_menu = OptionMenu(self.mp, self.xml_val, *self.xml_files)
-        self.xml_files_menu.grid( row = 50, column = 2, columnspan=10, sticky=W )
+        self.xml_files_menu.grid( row = 50, column = 2, columnspan=15, sticky=W )
 
         obs_types =['NEO', 'NEOCP', 'Unclassified', 'Comet', 'TNO', 'New NEO Candidate', 'New Comet', 'ARTSAT' ]
         self.obs_types_val = StringVar()
@@ -124,12 +126,16 @@ class autoOperations:
         Button( self.mp, text='Delete ADES File', command=self.delete_ades_file ).grid(row=50, column=0, columnspan=2, sticky=W+E)
 
         
+
+        
         self.dic = {}
         self.currentNumberOfObs = 0
 
         self.reloadObs80Button()
 
         self.checkIfConfigFileWasUpdated()
+
+
 
         
         
@@ -209,18 +215,10 @@ class autoOperations:
                 self.dic[i]['label_fwhm'].destroy()
                 self.dic[i]['label_snr'].destroy()
                 self.dic[i]['label_pos_unc'].destroy()
-        #if len( self.obs ) > 20:
-        #    end = 20
-        #else:
-        #    end = len( self.obs )
-        #print ('self.currentNumberOfObs', self.currentNumberOfObs)
-        #print ('self.obs', self.obs)
-        #for key in self.obs:
-        #    print ('self.obs[key]', key, type(key) )
-            #if i in self.obs
+
         for i in range( 0, end ):
             useObs = True
-            #print (self.obs80[i][0:3])
+
 
             
             
@@ -300,15 +298,6 @@ class autoOperations:
                     self.dic[i]['label_fwhm'].grid(row=row_value, column=14, sticky=W+E)
                     self.dic[i]['label_snr'].grid(row=row_value, column=16, sticky=W+E)
                     self.dic[i]['label_pos_unc'].grid(row=row_value, column=18, sticky=W+E)
-
-            #else:
-                #try:
-            #    print (i)
-                
-                #except:
-                #else:
-                #    print ('no destory', i)
-                    #pass
 
     def readObs80(self):
 
@@ -617,9 +606,11 @@ class autoOperations:
 
     def update_xml_file_list(self):
 
-        cwd = os.getcwd()
         
-        current_prep_list = glob.glob( cwd + "\\prep_xml*.xml")
+        current_prep_list = glob.glob( self.cwd + "\\built_files\\prep_xml*.xml")
+        current_prep_list += glob.glob( self.cwd + "\\built_files\\prep_psv*.psv")
+
+        print ('# of current prep_list', len( current_prep_list ) )
         #delete the whole xml_files list
         self.xml_files.clear()
 
@@ -638,7 +629,7 @@ class autoOperations:
         #self.xml_files_menu.config( self.xml_val, self.xml_files )
         self.xml_files_menu.destroy()
         self.xml_files_menu = OptionMenu(self.mp, self.xml_val, *self.xml_files)
-        self.xml_files_menu.grid( row = 50, column = 2, columnspan=10, sticky=W )
+        self.xml_files_menu.grid( row = 50, column = 2, columnspan=15, sticky=W )
 
         self.xml_val.set( self.xml_files[ len( self.xml_files )-1 ] )
 
@@ -661,14 +652,13 @@ class autoOperations:
         obs_type = self.obs_types_val.get()
         obs_type_field = "obj_type=%s"%(obs_type)
 
+        self.update_xml_file_list()
+
+
         if self.xml_psv_selection.get() == 'XML':
             
-            self.update_xml_file_list()
 
             #xml_filename = self.xml_val.get()
-
-            
-
             #print ('ack_line', ack_line)
             #print ('email_line', email_line)
             
@@ -681,8 +671,15 @@ class autoOperations:
             #real submission
             command = 'curl -i https://minorplanetcenter.net/submit_xml -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, ades_filename)
 
+
         elif self.xml_psv_selection.get() == 'PSV':
-            psv_filename = self.build_psv()
+            
+            #testing
+            #command = 'curl -i https://minorplanetcenter.net/submit_psv_test -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, psv_filename)
+
+            #real submission
+            command = 'curl -i https://minorplanetcenter.net/submit_psv -F "%s" -F "%s" -F "%s" -F "source=<%s" '%(obs_type_field, ack_line, email_line, ades_filename)
+                
 
         else:
             print ('Error, XML or PSV not selected')
@@ -691,42 +688,41 @@ class autoOperations:
         print (command)
         print ('len(command)', len(command))
 
-        res = os.system( command )
 
-        #print ('res', res)
-        #for key in res:
-        #    print ('key', key)
-        #print ('res1', res.read() )
-        #print ('len(res)', len(res))
+        if self.config["SUBMIT_RESULTS_TO_MPC"] == True:
+            #print ('yes')
+            res = os.system( command ) #just to make sure this function is working
+            #res = 1
 
-        if res == 0:
-            print ('MPC Accepted Submission')
-            self.submit_button.config(bg='Green')
-            current_file = self.xml_val.get()
-            newFile = current_file.replace('prep', 'submitted')
-            os.rename( current_file, newFile)
 
-            #remove all current prep_xml_files
-            cwd = os.getcwd()
-            current_prep_list = glob.glob( cwd + "\\prep_xml*.xml")
-            for i in current_prep_list:
-                os.remove(i)
+            if res == 0:
+                print ('MPC Accepted Submission')
+                self.submit_button.config(bg='Green')
+                current_file = self.xml_val.get()
+                newFile = current_file.replace('prep', 'submitted')
+                newFile = newFile.replace('built_files', 'submitted_files')
+                os.rename( current_file, newFile)
 
-            self.update_xml_file_list()
+                #remove all current prep_xml_files
+
+                current_prep_list = glob.glob( self.cwd + "\\built_files\\prep_xml*.xml")
+                current_prep_list += glob.glob( self.cwd + "\\built_files\\prep_psv*.psv")
+                for i in current_prep_list:
+                    os.remove(i)
+
+                self.update_xml_file_list()
+            else:
+                print ('MPC Rejected the Submission with curl error of: %s'%(res))
+                self.submit_button.config(bg='Red')
         else:
-            print ('MPC Rejected the Submission with curl error of: %s'%(res))
-            self.submit_button.config(bg='Red')
+            pass
+            #"nothing should be submitted to the mpc"
 
     def build_ades( self ):
 
-        current_date_time = datetime.utcnow()
+        
 
-        if self.xml_psv_selection.get() == 'XML':
-            ades_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.xml"
-        elif self.xml_psv_selection.get() == 'PSV':
-            ades_filename = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }.psv"
-        else:
-            print ('XML or PSV not selected')
+        
 
         #xml_filename = "Catalog.xml"
 
@@ -822,11 +818,17 @@ class autoOperations:
 
             #note including 'exp' right now because that would involve reading the data again or another scrube of the astrometric.log file to understand which images were stacked
 
+        current_date_time = datetime.now(timezone.utc)
+
 
 
         if self.xml_psv_selection.get() == 'XML':
             # generate the header and the first observation.
             XMLElement, ades, obsData = generate_xml(head_dict, data_dic[0] )
+
+            ades_filename_prep = f"prep_xml_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }_{self.permid}_{self.provid}_{self.trkSub}.xml"
+
+            ades_filename = os.path.join( self.cwd, 'built_files', ades_filename_prep)
         
             # update the xml
             for i in range( 1, len( data_dic ) ): #start at one because data_dic[0] was used to create the orginal file
@@ -839,8 +841,16 @@ class autoOperations:
                 files.write(xml_string)
 
         elif self.xml_psv_selection.get() == 'PSV':
+
+            ades_filename_prep = f"prep_psv_output_{ current_date_time.strftime( '%Y' ) }_{ current_date_time.strftime( '%m' ) }_{ current_date_time.strftime( '%d' ) }_{ current_date_time.strftime( '%H' ) }_{ current_date_time.strftime( '%M' ) }_{ current_date_time.strftime( '%S' ) }_{self.permid}_{self.provid}_{self.trkSub}.psv"
+
+            ades_filename = os.path.join( self.cwd, 'built_files', ades_filename_prep)
+
+
             #ades, obsData = generate_psv( head_dict, data_dic)
             generate_psv( head_dict, data_dic, ades_filename)
+
+            
 
 
 
@@ -848,6 +858,8 @@ class autoOperations:
         #def find_match_in_log_file( self ):
 
         #    for i in range(0, len( self.log ) ):
+
+        self.update_xml_file_list()
 
         return ades_filename
     
@@ -858,16 +870,6 @@ class autoOperations:
 
 
 
-    
-
-    
-
-
-
-
-
-        
-        
-
 if __name__ == "__main__":
+
     autoOperations()
